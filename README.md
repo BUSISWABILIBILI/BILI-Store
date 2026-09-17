@@ -4,7 +4,7 @@ BILI Store is a planned full-stack e-commerce ordering system for custom-sewn tr
 
 ## Current Phase
 
-Phase 9 is complete as the payment foundation. The repository now contains customer accounts, cart quoting, multi-step checkout, PAXI/PEP delivery review, return-policy acceptance, and development payment session creation.
+Phase 10 is complete as the order creation and confirmation foundation. The repository now contains customer accounts, cart quoting, multi-step checkout, PAXI/PEP delivery review, return-policy acceptance, development payment session creation, saved orders, and order confirmation.
 
 ## Source Brief
 
@@ -84,6 +84,14 @@ See `docs/PHASE_9_PAYMENTS.md` for:
 - Payment session endpoint
 - Frontend payment step
 - Real provider configuration points
+
+See `docs/PHASE_10_ORDERS.md` for:
+
+- Order creation endpoint
+- Order confirmation lookup
+- Order snapshot behaviour
+- Frontend order confirmation page
+- Account order-history links
 
 ## Local Development
 

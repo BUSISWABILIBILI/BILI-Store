@@ -3,6 +3,7 @@ import { CartPage } from "../pages/CartPage";
 import { CheckoutPage } from "../pages/CheckoutPage";
 import { HomePage } from "../pages/HomePage";
 import { MeasurementGuidePage } from "../pages/MeasurementGuidePage";
+import { OrderConfirmationPage } from "../pages/OrderConfirmationPage";
 import { ReturnPolicyPage } from "../pages/ReturnPolicyPage";
 import { ShopPage } from "../pages/ShopPage";
 
@@ -12,7 +13,7 @@ export const routes = [
   { path: "/measurements", label: "Measurements", element: MeasurementGuidePage },
   { path: "/cart", label: "Cart", element: CartPage },
   { path: "/checkout", label: "Checkout", element: CheckoutPage },
+  { path: "/orders/:orderNumber", label: "Order Confirmation", element: OrderConfirmationPage },
   { path: "/account", label: "Account", element: AccountPage },
   { path: "/return-policy", label: "Return Policy", element: ReturnPolicyPage },
 ] as const;
-

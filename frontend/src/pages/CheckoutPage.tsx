@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AlertCircle,
   ArrowLeft,
@@ -10,11 +10,13 @@ import {
   CreditCard,
   ExternalLink,
   MapPin,
+  PackageCheck,
   ShieldCheck,
   ShoppingBag,
   UserRound,
 } from "lucide-react";
 import { reviewCheckout } from "../services/checkoutApi";
+import { createOrder } from "../services/ordersApi";
 import { createPaymentSession } from "../services/paymentsApi";
 import { useAuthStore } from "../stores/authStore";
 import { useCartStore } from "../stores/cartStore";
@@ -49,7 +51,9 @@ const emptyDeliveryForm: CheckoutDeliveryDetails = {
 };
 
 export function CheckoutPage() {
+  const navigate = useNavigate();
   const items = useCartStore((state) => state.items);
+  const clearCart = useCartStore((state) => state.clearCart);
   const customer = useAuthStore((state) => state.customer);
   const [activeStep, setActiveStep] = useState(0);
   const [customerForm, setCustomerForm] = useState<CheckoutCustomerDetails>(emptyCustomerForm);
@@ -65,6 +69,16 @@ export function CheckoutPage() {
 
   const paymentMutation = useMutation({
     mutationFn: createPaymentSession,
+  });
+
+  const orderMutation = useMutation({
+    mutationFn: createOrder,
+    onSuccess: (response) => {
+      if (response.canCreateOrder && response.order) {
+        clearCart();
+        navigate(`/orders/${response.order.orderNumber}`);
+      }
+    },
   });
 
   useEffect(() => {
@@ -95,12 +109,14 @@ export function CheckoutPage() {
   function updateCustomerField(field: keyof CheckoutCustomerDetails, value: string) {
     reviewMutation.reset();
     paymentMutation.reset();
+    orderMutation.reset();
     setCustomerForm((current) => ({ ...current, [field]: value }));
   }
 
   function updateDeliveryField(field: keyof CheckoutDeliveryDetails, value: string) {
     reviewMutation.reset();
     paymentMutation.reset();
+    orderMutation.reset();
     setDeliveryForm((current) => ({ ...current, [field]: value }));
   }
 
@@ -115,14 +131,33 @@ export function CheckoutPage() {
 
   function submitReview() {
     paymentMutation.reset();
+    orderMutation.reset();
     reviewMutation.mutate(buildCheckoutPayload());
   }
 
   function startPaymentSession() {
+    orderMutation.reset();
     paymentMutation.mutate({
       checkout: buildCheckoutPayload(),
       successUrl: `${window.location.origin}/checkout`,
       cancelUrl: `${window.location.origin}/checkout`,
+    });
+  }
+
+  function submitOrder() {
+    if (!paymentSession) {
+      return;
+    }
+
+    orderMutation.mutate({
+      checkout: buildCheckoutPayload(),
+      payment: {
+        provider: paymentSession.provider,
+        providerReference: paymentSession.providerReference,
+        amount: paymentSession.amount,
+        currency: paymentSession.currency,
+        paymentUrl: paymentSession.paymentUrl,
+      },
     });
   }
 
@@ -152,7 +187,7 @@ export function CheckoutPage() {
           <h1>Review your custom order</h1>
           <p>
             Confirm customer details, PAXI/PEP collection information, return-policy acceptance, and
-            the development payment session.
+            the development payment session before saving the order.
           </p>
         </div>
       </section>
@@ -192,7 +227,7 @@ export function CheckoutPage() {
           <CheckCircle2 aria-hidden="true" size={22} />
           <div>
             <strong>Checkout review passed.</strong>
-            <p>These details are ready for order creation and payment in the next phase.</p>
+            <p>These details are ready for a payment session and order creation.</p>
           </div>
         </div>
       ) : null}
@@ -214,6 +249,21 @@ export function CheckoutPage() {
 
       {paymentMutation.isError ? (
         <p className="inline-alert">Payment session could not be created right now.</p>
+      ) : null}
+
+      {orderMutation.data?.issues.length ? (
+        <div className="validation-panel" role="alert">
+          <strong>Order cannot be created yet:</strong>
+          <ul>
+            {orderMutation.data.issues.map((issue) => (
+              <li key={`order-${issue.field}-${issue.message}`}>{issue.message}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {orderMutation.isError ? (
+        <p className="inline-alert">Order creation could not reach the backend right now.</p>
       ) : null}
 
       <div className="checkout-layout">
@@ -301,6 +351,7 @@ export function CheckoutPage() {
                   onChange={(event) => {
                     reviewMutation.reset();
                     paymentMutation.reset();
+                    orderMutation.reset();
                     setReturnPolicyAccepted(event.target.checked);
                   }}
                   type="checkbox"
@@ -406,6 +457,15 @@ export function CheckoutPage() {
                             <ExternalLink aria-hidden="true" size={18} />
                           </a>
                         ) : null}
+                        <button
+                          className="button button-primary"
+                          disabled={orderMutation.isPending}
+                          onClick={submitOrder}
+                          type="button"
+                        >
+                          <PackageCheck aria-hidden="true" size={18} />
+                          {orderMutation.isPending ? "Creating order..." : "Create order"}
+                        </button>
                       </div>
                     </div>
                   ) : null}

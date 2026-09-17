@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LogOut, Ruler, Save, UserRound } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   createCustomerMeasurementProfile,
   getCurrentCustomer,
@@ -323,6 +324,9 @@ export function AccountPage() {
                   {order.itemCount} item(s) / {order.paymentStatus} /{" "}
                   {new Date(order.orderDate).toLocaleDateString()}
                 </p>
+                <Link className="button button-light" to={`/orders/${order.orderNumber}`}>
+                  View order
+                </Link>
               </article>
             ))}
           </div>
