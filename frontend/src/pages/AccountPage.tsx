@@ -327,7 +327,7 @@ export function AccountPage() {
             ))}
           </div>
         ) : (
-          <p>Your order history will appear here after checkout and order creation are built.</p>
+          <p>Your order history will appear here after order creation is built.</p>
         )}
       </section>
     </div>

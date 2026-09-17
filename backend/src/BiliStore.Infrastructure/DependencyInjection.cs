@@ -1,8 +1,10 @@
 using BiliStore.Application.Cart;
 using BiliStore.Application.Catalogue;
+using BiliStore.Application.Checkout;
 using BiliStore.Application.Measurements;
 using BiliStore.Infrastructure.Cart;
 using BiliStore.Infrastructure.Catalogue;
+using BiliStore.Infrastructure.Checkout;
 using BiliStore.Infrastructure.Data;
 using BiliStore.Infrastructure.Identity;
 using BiliStore.Infrastructure.Measurements;
@@ -41,6 +43,7 @@ public static class DependencyInjection
 
         services.AddScoped<ICartQuoteService, CartQuoteService>();
         services.AddScoped<ICatalogueService, CatalogueService>();
+        services.AddScoped<ICheckoutReviewService, CheckoutReviewService>();
         services.AddScoped<IMeasurementValidationService, MeasurementValidationService>();
 
         return services;

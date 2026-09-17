@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Minus, Palette, Plus, Ruler, ShoppingBag, Trash2 } from "lucide-react";
 import { quoteCart } from "../services/cartApi";
 import { useCartStore } from "../stores/cartStore";
-import type { CartQuoteRequest } from "../types/cart";
+import { buildCartQuoteRequest } from "../utils/cartQuote";
 import { formatCurrency } from "../utils/formatters";
 
 const fallbackDeliveryFee = 99;
@@ -15,24 +15,7 @@ export function CartPage() {
   const removeItem = useCartStore((state) => state.removeItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
 
-  const quoteRequest = useMemo<CartQuoteRequest>(
-    () => ({
-      items: items.map((item) => ({
-        productSlug: item.productSlug,
-        selectedColourId: item.selectedColour?.id ?? null,
-        customColourName: item.customColourName,
-        customColourHex: item.customColourHex,
-        quantity: item.quantity,
-        measurements: item.measurements.map((measurement) => ({
-          measurementKey: measurement.measurementKey,
-          measurementName: measurement.measurementName,
-          valueCm: measurement.valueCm,
-          unit: measurement.unit,
-        })),
-      })),
-    }),
-    [items],
-  );
+  const quoteRequest = useMemo(() => buildCartQuoteRequest(items), [items]);
 
   const quoteQuery = useQuery({
     queryKey: ["cart-quote", quoteRequest],
@@ -214,8 +197,8 @@ export function CartPage() {
             <ArrowRight aria-hidden="true" size={18} />
           </Link>
           <p>
-            Checkout will collect customer details, PAXI/PEP collection point information, and
-            return-policy acceptance in Phase 8.
+            Checkout collects customer details, PAXI/PEP collection point information, and
+            return-policy acceptance before payment.
           </p>
         </aside>
       </div>
