@@ -1,7 +1,9 @@
 using BiliStore.Application.Catalogue;
+using BiliStore.Application.Measurements;
 using BiliStore.Infrastructure.Catalogue;
 using BiliStore.Infrastructure.Data;
 using BiliStore.Infrastructure.Identity;
+using BiliStore.Infrastructure.Measurements;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +38,7 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<BiliStoreDbContext>();
 
         services.AddScoped<ICatalogueService, CatalogueService>();
+        services.AddScoped<IMeasurementValidationService, MeasurementValidationService>();
 
         return services;
     }

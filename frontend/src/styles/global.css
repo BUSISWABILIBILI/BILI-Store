@@ -730,8 +730,26 @@ p {
   padding: 2rem;
 }
 
+.product-detail-layout {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(260px, 0.78fr) minmax(0, 1fr);
+}
+
+.detail-image {
+  background-position: center;
+  background-size: cover;
+  border-radius: 8px;
+  min-height: 320px;
+}
+
 .product-detail-panel h2 {
   font-size: 2.35rem;
+}
+
+.fabric-note {
+  color: var(--color-ink);
+  font-weight: 800;
 }
 
 .detail-facts {
@@ -747,6 +765,152 @@ p {
   color: var(--color-brand);
   font-weight: 900;
   padding: 0.55rem 0.75rem;
+}
+
+.measurement-workspace {
+  background: #fbf5ee;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.25rem;
+}
+
+.measurement-workspace-header {
+  align-items: start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.measurement-workspace-header svg {
+  color: var(--color-brand);
+  flex: 0 0 auto;
+}
+
+.measurement-form-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.measurement-field {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.measurement-field > span {
+  color: var(--color-ink);
+  display: grid;
+  font-weight: 900;
+  gap: 0.25rem;
+}
+
+.measurement-field small {
+  color: var(--color-muted);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.measurement-input-row {
+  align-items: center;
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.measurement-input-row input,
+.save-profile-row input {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-ink);
+  min-height: 44px;
+  padding: 0.7rem 0.8rem;
+  width: 100%;
+}
+
+.measurement-input-row span {
+  color: var(--color-muted);
+  font-weight: 900;
+}
+
+.measurement-actions,
+.save-profile-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.save-profile-row {
+  flex: 1;
+}
+
+.save-profile-row input {
+  flex: 1 1 220px;
+}
+
+.success-panel,
+.validation-panel,
+.saved-profile-panel {
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.success-panel {
+  align-items: center;
+  background: #edf7ec;
+  border: 1px solid rgb(88 101 67 / 28%);
+  color: var(--color-olive);
+  display: flex;
+  gap: 0.75rem;
+}
+
+.success-panel p {
+  color: var(--color-olive);
+  font-weight: 800;
+  margin: 0;
+}
+
+.validation-panel {
+  background: #fff0ec;
+  border: 1px solid rgb(185 101 79 / 35%);
+  color: #7a2d2a;
+}
+
+.validation-panel ul {
+  margin: 0.5rem 0 0 1.2rem;
+  padding: 0;
+}
+
+.profile-note {
+  color: var(--color-brand);
+  font-weight: 900;
+  margin-bottom: 0;
+}
+
+.saved-profile-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: grid;
+  gap: 0.85rem;
+}
+
+.saved-profile-panel > div:first-child {
+  align-items: center;
+  color: var(--color-brand);
+  display: flex;
+  gap: 0.55rem;
+}
+
+.saved-profile-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 }
 
 .guide-hero {
@@ -1021,6 +1185,7 @@ p {
   .split-section,
   .newsletter-band,
   .guide-hero,
+  .product-detail-layout,
   .api-panel,
   .site-footer {
     grid-template-columns: 1fr;
@@ -1079,6 +1244,7 @@ p {
   .step-grid,
   .trust-grid,
   .measurement-grid,
+  .measurement-form-grid,
   .cart-preview-grid,
   .newsletter-form,
   .measurement-card {
@@ -1092,5 +1258,14 @@ p {
   .product-visual {
     background-size: 175%;
     min-height: 250px;
+  }
+
+  .detail-image {
+    min-height: 240px;
+  }
+
+  .measurement-actions,
+  .save-profile-row {
+    display: grid;
   }
 }

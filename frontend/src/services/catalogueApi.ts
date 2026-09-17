@@ -7,6 +7,10 @@ import type {
   ProductQuery,
   ProductSummary,
 } from "../types/catalogue";
+import type {
+  MeasurementValidationResponse,
+  ValidateProductMeasurementsRequest,
+} from "../types/measurements";
 
 export async function getProducts(query: ProductQuery = {}) {
   const response = await apiClient.get<ProductSummary[]>("/products", {
@@ -36,6 +40,12 @@ export async function getColours() {
 
 export async function getMeasurements() {
   const response = await apiClient.get<MeasurementType[]>("/measurements");
+
+  return response.data;
+}
+
+export async function validateProductMeasurements(request: ValidateProductMeasurementsRequest) {
+  const response = await apiClient.post<MeasurementValidationResponse>("/measurements/validate", request);
 
   return response.data;
 }

@@ -39,3 +39,19 @@ GET {{BiliStore.Api_HostAddress}}/api/measurements
 Accept: application/json
 
 ###
+
+POST {{BiliStore.Api_HostAddress}}/api/measurements/validate
+Content-Type: application/json
+
+{
+  "productSlug": "burgundy-imvunulo-dress",
+  "measurements": [
+    { "measurementKey": "bust_chest", "valueCm": 94 },
+    { "measurementKey": "waist", "valueCm": 76 },
+    { "measurementKey": "hips", "valueCm": 104 },
+    { "measurementKey": "shoulder_width", "valueCm": 40 },
+    { "measurementKey": "dress_length", "valueCm": 145 }
+  ]
+}
+
+###

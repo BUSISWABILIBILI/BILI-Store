@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { FeaturedProductCard } from "../components/home/FeaturedProductCard";
+import { ProductMeasurementForm } from "../components/shop/ProductMeasurementForm";
 import { SectionHeader } from "../components/ui/SectionHeader";
 import { featuredProducts, storeCategories } from "../data/storefront";
 import { getCategories, getProductBySlug, getProducts } from "../services/catalogueApi";
@@ -169,21 +170,40 @@ export function ShopPage() {
           ) : null}
           {productDetailsQuery.data ? (
             <>
-              <div>
-                <p className="eyebrow">Product details from API</p>
-                <h2>{productDetailsQuery.data.name}</h2>
-                <p>{productDetailsQuery.data.description}</p>
+              <div className="product-detail-layout">
+                <div
+                  aria-label={productDetailsQuery.data.primaryImageAltText}
+                  className="detail-image"
+                  style={{ backgroundImage: `url(${productDetailsQuery.data.primaryImageUrl})` }}
+                />
+                <div>
+                  <p className="eyebrow">Product details from API</p>
+                  <h2>{productDetailsQuery.data.name}</h2>
+                  <p>{productDetailsQuery.data.description}</p>
+                  {productDetailsQuery.data.fabricDescription ? (
+                    <p className="fabric-note">{productDetailsQuery.data.fabricDescription}</p>
+                  ) : null}
+                  <div className="swatch-row" aria-label="Available colours">
+                    {productDetailsQuery.data.availableColours.map((colour) => (
+                      <span
+                        className="color-swatch"
+                        key={colour.id}
+                        style={{ backgroundColor: colour.hexCode }}
+                        title={colour.name}
+                      />
+                    ))}
+                    {productDetailsQuery.data.allowsCustomColor ? (
+                      <span className="custom-colour-note">Custom colour ready</span>
+                    ) : null}
+                  </div>
+                </div>
               </div>
               <div className="detail-facts">
                 <span>{productDetailsQuery.data.clothingType}</span>
                 <span>{productDetailsQuery.data.estimatedProductionDays} sewing days</span>
                 <span>{productDetailsQuery.data.allowsCustomColor ? "Custom colour allowed" : "Swatches only"}</span>
               </div>
-              <div className="measurement-board">
-                {productDetailsQuery.data.measurementRequirements.map((measurement) => (
-                  <span key={measurement.id}>{measurement.name}</span>
-                ))}
-              </div>
+              <ProductMeasurementForm product={productDetailsQuery.data} />
             </>
           ) : null}
         </section>
