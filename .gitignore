@@ -1,0 +1,48 @@
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.pnpm-store/
+.pnpm-store/
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Backend
+backend/**/bin/
+backend/**/obj/
+backend/**/TestResults/
+backend/.nuget/
+backend/**/appsettings.Development.local.json
+backend/**/appsettings.Production.json
+backend/**/appsettings.*.local.json
+
+# User and IDE files
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs and local output
+*.log
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Alternate metadata used only if the app sandbox blocks writes to .git
+.git/
+.repo-history/
