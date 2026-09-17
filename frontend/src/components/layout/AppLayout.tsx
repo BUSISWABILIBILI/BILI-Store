@@ -1,18 +1,23 @@
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { Menu, Scissors, ShoppingBag, UserRound, X } from "lucide-react";
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { routes } from "../../app/routes";
 
 export function AppLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const primaryNavigation = routes.filter((route) =>
+    ["/shop", "/measurements", "/return-policy"].includes(route.path),
+  );
 
   return (
     <div className="app-shell">
       <header className="site-header">
-        <div className="announcement-bar">Custom sewn clothing made to your measurements.</div>
+        <div className="announcement-bar">
+          Custom sewn clothing made to your measurements. PAXI/PEP delivery ready.
+        </div>
         <nav className="nav-shell" aria-label="Main navigation">
           <NavLink to="/" className="brand-mark" onClick={() => setIsMenuOpen(false)}>
-            <ShoppingBag aria-hidden="true" size={24} />
+            <Scissors aria-hidden="true" size={24} />
             <span>BILI Store</span>
           </NavLink>
 
@@ -26,18 +31,26 @@ export function AppLayout() {
           </button>
 
           <div className={isMenuOpen ? "nav-links nav-links-open" : "nav-links"}>
-            {routes
-              .filter((route) => route.path !== "/")
-              .map((route) => (
-                <NavLink
-                  key={route.path}
-                  to={route.path}
-                  className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {route.label}
-                </NavLink>
-              ))}
+            {primaryNavigation.map((route) => (
+              <NavLink
+                key={route.path}
+                to={route.path}
+                className={({ isActive }) => (isActive ? "nav-link nav-link-active" : "nav-link")}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {route.label}
+              </NavLink>
+            ))}
+          </div>
+
+          <div className="nav-actions">
+            <NavLink className="icon-button" to="/account" aria-label="Account">
+              <UserRound aria-hidden="true" size={20} />
+            </NavLink>
+            <NavLink className="icon-button cart-action" to="/cart" aria-label="Cart">
+              <ShoppingBag aria-hidden="true" size={20} />
+              <span aria-hidden="true">0</span>
+            </NavLink>
           </div>
         </nav>
       </header>
@@ -47,10 +60,19 @@ export function AppLayout() {
       </main>
 
       <footer className="site-footer">
-        <span>BILI Store</span>
-        <span>Traditional clothing. Custom fit. PAXI/PEP delivery ready.</span>
+        <div>
+          <Link to="/" className="footer-brand">
+            BILI Store
+          </Link>
+          <p>Traditional clothing. Custom fit. Premium boutique ordering.</p>
+        </div>
+        <div className="footer-links">
+          <Link to="/shop">Shop</Link>
+          <Link to="/measurements">Measurements</Link>
+          <Link to="/return-policy">Return Policy</Link>
+          <Link to="/checkout">Checkout</Link>
+        </div>
       </footer>
     </div>
   );
 }
-

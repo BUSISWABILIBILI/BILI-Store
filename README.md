@@ -4,7 +4,7 @@ BILI Store is a planned full-stack e-commerce ordering system for custom-sewn tr
 
 ## Current Phase
 
-Phase 2 is complete as the project setup foundation. The repository now contains a React frontend shell and an ASP.NET Core backend solution with layered projects, EF Core configuration, CORS, development settings, and health endpoints.
+Phase 3 is complete as the frontend design foundation. The repository now contains a React frontend with a polished boutique homepage, navigation, footer, customer category tiles, featured product preview cards, a measurement guide layout, and a stronger shop/cart visual foundation. The ASP.NET Core backend foundation from Phase 2 remains in place.
 
 ## Source Brief
 
@@ -29,6 +29,14 @@ See `docs/PHASE_2_SETUP.md` for:
 - Environment variable structure
 - Run/test commands
 - Verification notes from this setup phase
+
+See `docs/PHASE_3_FRONTEND_DESIGN.md` for:
+
+- Frontend design foundation details
+- New React data/component structure
+- Homepage, shop, measurement, and cart page explanations
+- Styling and responsive layout notes
+- Run/test commands and verification results
 
 ## Local Development
 
