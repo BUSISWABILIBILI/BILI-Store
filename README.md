@@ -4,7 +4,7 @@ BILI Store is a planned full-stack e-commerce ordering system for custom-sewn tr
 
 ## Current Phase
 
-Phase 5 is complete as the measurement foundation. The repository now contains backend measurement validation and a React product-detail measurement form that asks for the measurements required by each garment.
+Phase 6 is complete as the shopping cart foundation. The repository now contains a persisted React cart, add-to-cart from validated product customisation, and a backend cart quote endpoint for trusted totals.
 
 ## Source Brief
 
@@ -51,6 +51,14 @@ See `docs/PHASE_5_MEASUREMENTS.md` for:
 - Dynamic product measurement fields
 - Frontend product measurement form
 - Browser-local saved measurement profiles
+- Run/test commands and verification results
+
+See `docs/PHASE_6_CART.md` for:
+
+- Backend cart quote endpoint
+- Persisted frontend cart store
+- Add-to-cart from product customisation
+- Cart page item/totals behaviour
 - Run/test commands and verification results
 
 ## Local Development

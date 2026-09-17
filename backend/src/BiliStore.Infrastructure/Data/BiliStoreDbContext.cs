@@ -31,7 +31,7 @@ public sealed class BiliStoreDbContext(DbContextOptions<BiliStoreDbContext> opti
 
     public DbSet<CustomerMeasurement> CustomerMeasurements => Set<CustomerMeasurement>();
 
-    public DbSet<Cart> Carts => Set<Cart>();
+    public DbSet<BiliStore.Domain.Entities.Cart> Carts => Set<BiliStore.Domain.Entities.Cart>();
 
     public DbSet<CartItem> CartItems => Set<CartItem>();
 
@@ -154,7 +154,7 @@ public sealed class BiliStoreDbContext(DbContextOptions<BiliStoreDbContext> opti
 
     private static void ConfigureCart(ModelBuilder builder)
     {
-        builder.Entity<Cart>(entity =>
+        builder.Entity<BiliStore.Domain.Entities.Cart>(entity =>
         {
             entity.Property(cart => cart.AnonymousCartKey).HasMaxLength(100);
             entity.HasIndex(cart => cart.AnonymousCartKey);
@@ -236,4 +236,3 @@ public sealed class BiliStoreDbContext(DbContextOptions<BiliStoreDbContext> opti
         });
     }
 }
-

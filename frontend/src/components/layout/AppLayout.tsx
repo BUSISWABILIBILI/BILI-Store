@@ -2,9 +2,13 @@ import { Menu, Scissors, ShoppingBag, UserRound, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { routes } from "../../app/routes";
+import { useCartStore } from "../../stores/cartStore";
 
 export function AppLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartItemCount = useCartStore((state) =>
+    state.items.reduce((total, item) => total + item.quantity, 0),
+  );
   const primaryNavigation = routes.filter((route) =>
     ["/shop", "/measurements", "/return-policy"].includes(route.path),
   );
@@ -49,7 +53,7 @@ export function AppLayout() {
             </NavLink>
             <NavLink className="icon-button cart-action" to="/cart" aria-label="Cart">
               <ShoppingBag aria-hidden="true" size={20} />
-              <span aria-hidden="true">0</span>
+              <span aria-hidden="true">{cartItemCount}</span>
             </NavLink>
           </div>
         </nav>

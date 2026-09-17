@@ -1,7 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { CheckCircle2, Ruler, Save, UserRound } from "lucide-react";
+import { CheckCircle2, Palette, Ruler, Save, ShoppingBag, UserRound } from "lucide-react";
+import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { validateProductMeasurements } from "../../services/catalogueApi";
+import { useCartStore } from "../../stores/cartStore";
 import type { ProductDetails } from "../../types/catalogue";
 import type { SavedMeasurementProfile } from "../../types/measurements";
 import {
@@ -15,14 +17,27 @@ type ProductMeasurementFormProps = {
 };
 
 export function ProductMeasurementForm({ product }: ProductMeasurementFormProps) {
+  const addItem = useCartStore((state) => state.addItem);
   const [values, setValues] = useState<Record<string, string>>({});
   const [profileName, setProfileName] = useState("My Measurements");
   const [profiles, setProfiles] = useState<SavedMeasurementProfile[]>(() => loadMeasurementProfiles());
   const [saveMessage, setSaveMessage] = useState("");
+  const [colourMode, setColourMode] = useState<"swatch" | "custom">("swatch");
+  const [selectedColourId, setSelectedColourId] = useState(product.availableColours[0]?.id ?? "");
+  const [customColourName, setCustomColourName] = useState("");
+  const [customColourHex, setCustomColourHex] = useState("#7a2d2a");
+  const [quantity, setQuantity] = useState(1);
+  const [cartMessage, setCartMessage] = useState("");
 
   useEffect(() => {
     setValues({});
     setSaveMessage("");
+    setCartMessage("");
+    setColourMode("swatch");
+    setSelectedColourId(product.availableColours[0]?.id ?? "");
+    setCustomColourName("");
+    setCustomColourHex("#7a2d2a");
+    setQuantity(1);
   }, [product.slug]);
 
   const requiredMeasurements = useMemo(
@@ -39,6 +54,8 @@ export function ProductMeasurementForm({ product }: ProductMeasurementFormProps)
       ...currentValues,
       [measurementKey]: value,
     }));
+    setCartMessage("");
+    validationMutation.reset();
   }
 
   function applyProfile(profile: SavedMeasurementProfile) {
@@ -72,6 +89,7 @@ export function ProductMeasurementForm({ product }: ProductMeasurementFormProps)
   }
 
   function validateMeasurements() {
+    setCartMessage("");
     validationMutation.mutate({
       productSlug: product.slug,
       measurements: requiredMeasurements.map((measurement) => ({
@@ -79,6 +97,47 @@ export function ProductMeasurementForm({ product }: ProductMeasurementFormProps)
         valueCm: toNumberOrNull(values[measurement.key]),
       })),
     });
+  }
+
+  function addProductToCart() {
+    if (!validationMutation.data?.isValid) {
+      setCartMessage("Validate the measurements before adding this custom garment to the cart.");
+      return;
+    }
+
+    if (colourMode === "swatch" && !selectedColourId) {
+      setCartMessage("Choose a colour before adding this custom garment to the cart.");
+      return;
+    }
+
+    if (colourMode === "custom" && !customColourName.trim()) {
+      setCartMessage("Enter a custom colour name before adding this custom garment to the cart.");
+      return;
+    }
+
+    const selectedColour =
+      colourMode === "swatch"
+        ? product.availableColours.find((colour) => colour.id === selectedColourId) ?? null
+        : null;
+
+    addItem({
+      productId: product.id,
+      productSlug: product.slug,
+      productName: product.name,
+      productDescription: product.description,
+      clothingType: product.clothingType,
+      imageUrl: product.primaryImageUrl,
+      imageAltText: product.primaryImageAltText,
+      unitPrice: product.price,
+      productionDaysEstimate: product.estimatedProductionDays,
+      quantity,
+      selectedColour,
+      customColourName: colourMode === "custom" ? customColourName.trim() : null,
+      customColourHex: colourMode === "custom" ? customColourHex : null,
+      measurements: validationMutation.data.acceptedMeasurements,
+    });
+
+    setCartMessage(`${product.name} was added to your cart with measurements attached.`);
   }
 
   return (
@@ -124,6 +183,90 @@ export function ProductMeasurementForm({ product }: ProductMeasurementFormProps)
         })}
       </div>
 
+      <div className="customisation-grid">
+        <section className="customisation-panel" aria-label="Colour selection">
+          <div>
+            <p className="eyebrow">Colour</p>
+            <h4>Choose a swatch or custom colour</h4>
+          </div>
+          <div className="colour-choice-row">
+            {product.availableColours.map((colour) => (
+              <button
+                className={
+                  colourMode === "swatch" && selectedColourId === colour.id
+                    ? "colour-choice colour-choice-active"
+                    : "colour-choice"
+                }
+                key={colour.id}
+                onClick={() => {
+                  setColourMode("swatch");
+                  setSelectedColourId(colour.id);
+                  setCartMessage("");
+                }}
+                style={{ "--choice-colour": colour.hexCode } as CSSProperties}
+                type="button"
+              >
+                <span aria-hidden="true" />
+                {colour.name}
+              </button>
+            ))}
+          </div>
+          {product.allowsCustomColor ? (
+            <div className="custom-colour-fields">
+              <button
+                className={colourMode === "custom" ? "pill-button pill-button-active" : "pill-button"}
+                onClick={() => {
+                  setColourMode("custom");
+                  setCartMessage("");
+                }}
+                type="button"
+              >
+                <Palette aria-hidden="true" size={17} />
+                Use custom colour
+              </button>
+              {colourMode === "custom" ? (
+                <div className="custom-colour-inputs">
+                  <label>
+                    <span>Colour name</span>
+                    <input
+                      onChange={(event) => setCustomColourName(event.target.value)}
+                      placeholder="e.g. Emerald green"
+                      type="text"
+                      value={customColourName}
+                    />
+                  </label>
+                  <label>
+                    <span>Colour picker</span>
+                    <input
+                      onChange={(event) => setCustomColourHex(event.target.value)}
+                      type="color"
+                      value={customColourHex}
+                    />
+                  </label>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </section>
+
+        <section className="customisation-panel" aria-label="Quantity">
+          <div>
+            <p className="eyebrow">Quantity</p>
+            <h4>Set garment quantity</h4>
+          </div>
+          <label className="quantity-field">
+            <span>Quantity</span>
+            <input
+              min={1}
+              max={20}
+              onChange={(event) => setQuantity(Math.max(1, Number(event.target.value)))}
+              type="number"
+              value={quantity}
+            />
+          </label>
+        </section>
+      </div>
+
       <div className="measurement-actions">
         <button className="button button-primary" onClick={validateMeasurements} type="button">
           <CheckCircle2 aria-hidden="true" size={18} />
@@ -145,6 +288,10 @@ export function ProductMeasurementForm({ product }: ProductMeasurementFormProps)
             Save profile
           </button>
         </div>
+        <button className="button button-primary" onClick={addProductToCart} type="button">
+          <ShoppingBag aria-hidden="true" size={18} />
+          Add custom garment to cart
+        </button>
       </div>
 
       {validationMutation.isPending ? <p className="inline-alert">Checking measurements...</p> : null}
@@ -175,6 +322,7 @@ export function ProductMeasurementForm({ product }: ProductMeasurementFormProps)
       ) : null}
 
       {saveMessage ? <p className="profile-note">{saveMessage}</p> : null}
+      {cartMessage ? <p className="profile-note">{cartMessage}</p> : null}
 
       {profiles.length > 0 ? (
         <div className="saved-profile-panel">

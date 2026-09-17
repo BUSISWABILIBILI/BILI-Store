@@ -1,5 +1,7 @@
+using BiliStore.Application.Cart;
 using BiliStore.Application.Catalogue;
 using BiliStore.Application.Measurements;
+using BiliStore.Infrastructure.Cart;
 using BiliStore.Infrastructure.Catalogue;
 using BiliStore.Infrastructure.Data;
 using BiliStore.Infrastructure.Identity;
@@ -37,6 +39,7 @@ public static class DependencyInjection
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<BiliStoreDbContext>();
 
+        services.AddScoped<ICartQuoteService, CartQuoteService>();
         services.AddScoped<ICatalogueService, CatalogueService>();
         services.AddScoped<IMeasurementValidationService, MeasurementValidationService>();
 
