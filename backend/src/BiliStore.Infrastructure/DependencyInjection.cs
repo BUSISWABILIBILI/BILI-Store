@@ -2,12 +2,14 @@ using BiliStore.Application.Cart;
 using BiliStore.Application.Catalogue;
 using BiliStore.Application.Checkout;
 using BiliStore.Application.Measurements;
+using BiliStore.Application.Payments;
 using BiliStore.Infrastructure.Cart;
 using BiliStore.Infrastructure.Catalogue;
 using BiliStore.Infrastructure.Checkout;
 using BiliStore.Infrastructure.Data;
 using BiliStore.Infrastructure.Identity;
 using BiliStore.Infrastructure.Measurements;
+using BiliStore.Infrastructure.Payments;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +47,7 @@ public static class DependencyInjection
         services.AddScoped<ICatalogueService, CatalogueService>();
         services.AddScoped<ICheckoutReviewService, CheckoutReviewService>();
         services.AddScoped<IMeasurementValidationService, MeasurementValidationService>();
+        services.AddScoped<IPaymentSessionService, DevelopmentPaymentSessionService>();
 
         return services;
     }

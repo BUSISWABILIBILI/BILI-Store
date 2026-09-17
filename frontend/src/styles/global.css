@@ -1202,7 +1202,7 @@ p {
 .checkout-steps {
   display: grid;
   gap: 0.75rem;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
 }
 
 .checkout-step-button {
@@ -1338,6 +1338,45 @@ p {
 .checkout-review-item p {
   color: var(--color-muted);
   margin-bottom: 0;
+}
+
+.payment-session-card {
+  align-items: flex-start;
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.payment-session-card > svg {
+  color: var(--color-brand);
+  flex: 0 0 auto;
+}
+
+.payment-session-card dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.payment-session-card dl div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.payment-session-card dt {
+  color: var(--color-muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.payment-session-card dd {
+  font-weight: 900;
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .checkout-actions {

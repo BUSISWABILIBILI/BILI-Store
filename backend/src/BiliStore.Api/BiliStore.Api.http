@@ -121,6 +121,51 @@ Content-Type: application/json
 
 ###
 
+POST {{BiliStore.Api_HostAddress}}/api/payments/create-session
+Content-Type: application/json
+
+{
+  "successUrl": "http://localhost:5173/checkout",
+  "cancelUrl": "http://localhost:5173/checkout",
+  "checkout": {
+    "customer": {
+      "firstName": "Demo",
+      "lastName": "Customer",
+      "email": "demo.customer@example.com",
+      "phone": "0821234567"
+    },
+    "delivery": {
+      "recipientPhone": "0821234567",
+      "paxiStoreCode": "PEP-1234",
+      "collectionPointName": "PEP Johannesburg CBD",
+      "townCity": "Johannesburg",
+      "province": "Gauteng",
+      "instructions": "Please use the selected PAXI/PEP collection point."
+    },
+    "returnPolicyAccepted": true,
+    "cart": {
+      "items": [
+        {
+          "productSlug": "burgundy-imvunulo-dress",
+          "selectedColourId": "20000000-0000-0000-0000-000000000007",
+          "customColourName": null,
+          "customColourHex": null,
+          "quantity": 1,
+          "measurements": [
+            { "measurementKey": "bust_chest", "measurementName": "Bust/Chest", "valueCm": 94, "unit": "cm" },
+            { "measurementKey": "waist", "measurementName": "Waist", "valueCm": 76, "unit": "cm" },
+            { "measurementKey": "hips", "measurementName": "Hips", "valueCm": 104, "unit": "cm" },
+            { "measurementKey": "shoulder_width", "measurementName": "Shoulder width", "valueCm": 40, "unit": "cm" },
+            { "measurementKey": "dress_length", "measurementName": "Dress length", "valueCm": 145, "unit": "cm" }
+          ]
+        }
+      ]
+    }
+  }
+}
+
+###
+
 POST {{BiliStore.Api_HostAddress}}/api/auth/register
 Content-Type: application/json
 

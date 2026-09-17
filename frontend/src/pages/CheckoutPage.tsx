@@ -7,12 +7,15 @@ import {
   ArrowRight,
   CheckCircle2,
   ClipboardCheck,
+  CreditCard,
+  ExternalLink,
   MapPin,
   ShieldCheck,
   ShoppingBag,
   UserRound,
 } from "lucide-react";
 import { reviewCheckout } from "../services/checkoutApi";
+import { createPaymentSession } from "../services/paymentsApi";
 import { useAuthStore } from "../stores/authStore";
 import { useCartStore } from "../stores/cartStore";
 import type { CheckoutCustomerDetails, CheckoutDeliveryDetails } from "../types/checkout";
@@ -26,6 +29,7 @@ const checkoutSteps = [
   { title: "Delivery", icon: MapPin },
   { title: "Policy", icon: ShieldCheck },
   { title: "Review", icon: ClipboardCheck },
+  { title: "Payment", icon: CreditCard },
 ];
 
 const emptyCustomerForm: CheckoutCustomerDetails = {
@@ -59,6 +63,10 @@ export function CheckoutPage() {
     mutationFn: reviewCheckout,
   });
 
+  const paymentMutation = useMutation({
+    mutationFn: createPaymentSession,
+  });
+
   useEffect(() => {
     if (!customer) {
       return;
@@ -78,6 +86,7 @@ export function CheckoutPage() {
   }, [customer]);
 
   const review = reviewMutation.data;
+  const paymentSession = paymentMutation.data?.payment;
   const quote = review?.quote;
   const subtotal = quote?.subtotal ?? localSubtotal;
   const deliveryFee = quote?.deliveryFee ?? (items.length > 0 ? fallbackDeliveryFee : 0);
@@ -85,20 +94,35 @@ export function CheckoutPage() {
 
   function updateCustomerField(field: keyof CheckoutCustomerDetails, value: string) {
     reviewMutation.reset();
+    paymentMutation.reset();
     setCustomerForm((current) => ({ ...current, [field]: value }));
   }
 
   function updateDeliveryField(field: keyof CheckoutDeliveryDetails, value: string) {
     reviewMutation.reset();
+    paymentMutation.reset();
     setDeliveryForm((current) => ({ ...current, [field]: value }));
   }
 
-  function submitReview() {
-    reviewMutation.mutate({
+  function buildCheckoutPayload() {
+    return {
       customer: customerForm,
       delivery: deliveryForm,
       returnPolicyAccepted,
       cart: quoteRequest,
+    };
+  }
+
+  function submitReview() {
+    paymentMutation.reset();
+    reviewMutation.mutate(buildCheckoutPayload());
+  }
+
+  function startPaymentSession() {
+    paymentMutation.mutate({
+      checkout: buildCheckoutPayload(),
+      successUrl: `${window.location.origin}/checkout`,
+      cancelUrl: `${window.location.origin}/checkout`,
     });
   }
 
@@ -127,8 +151,8 @@ export function CheckoutPage() {
           <p className="eyebrow">Checkout</p>
           <h1>Review your custom order</h1>
           <p>
-            Confirm customer details, PAXI/PEP collection information, and the return policy before
-            payment is added in the next phase.
+            Confirm customer details, PAXI/PEP collection information, return-policy acceptance, and
+            the development payment session.
           </p>
         </div>
       </section>
@@ -175,6 +199,21 @@ export function CheckoutPage() {
 
       {reviewMutation.isError ? (
         <p className="inline-alert">Checkout review could not reach the backend right now.</p>
+      ) : null}
+
+      {paymentMutation.data?.issues.length ? (
+        <div className="validation-panel" role="alert">
+          <strong>Payment cannot start yet:</strong>
+          <ul>
+            {paymentMutation.data.issues.map((issue) => (
+              <li key={`payment-${issue.field}-${issue.message}`}>{issue.message}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {paymentMutation.isError ? (
+        <p className="inline-alert">Payment session could not be created right now.</p>
       ) : null}
 
       <div className="checkout-layout">
@@ -261,6 +300,7 @@ export function CheckoutPage() {
                   checked={returnPolicyAccepted}
                   onChange={(event) => {
                     reviewMutation.reset();
+                    paymentMutation.reset();
                     setReturnPolicyAccepted(event.target.checked);
                   }}
                   type="checkbox"
@@ -301,6 +341,76 @@ export function CheckoutPage() {
                 <ClipboardCheck aria-hidden="true" size={18} />
                 {reviewMutation.isPending ? "Reviewing..." : "Review checkout"}
               </button>
+            </>
+          ) : null}
+
+          {activeStep === 4 ? (
+            <>
+              <CreditCard aria-hidden="true" size={26} />
+              <h2>Payment session</h2>
+              {!review?.canContinue ? (
+                <div className="payment-session-card">
+                  <AlertCircle aria-hidden="true" size={22} />
+                  <div>
+                    <strong>Review checkout first.</strong>
+                    <p>
+                      Payment can only start after the backend confirms customer, delivery, policy,
+                      and cart details.
+                    </p>
+                    <button
+                      className="button button-light"
+                      onClick={() => setActiveStep(3)}
+                      type="button"
+                    >
+                      Go to review
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <p>
+                    Start a development payment session. This creates a pending payment reference
+                    without connecting to a live bank card provider.
+                  </p>
+                  <button
+                    className="button button-primary"
+                    disabled={paymentMutation.isPending}
+                    onClick={startPaymentSession}
+                    type="button"
+                  >
+                    <CreditCard aria-hidden="true" size={18} />
+                    {paymentMutation.isPending ? "Creating session..." : "Start test payment"}
+                  </button>
+                  {paymentSession ? (
+                    <div className="payment-session-card">
+                      <CheckCircle2 aria-hidden="true" size={22} />
+                      <div>
+                        <strong>{paymentSession.provider} payment ready</strong>
+                        <dl>
+                          <div>
+                            <dt>Reference</dt>
+                            <dd>{paymentSession.providerReference}</dd>
+                          </div>
+                          <div>
+                            <dt>Status</dt>
+                            <dd>{paymentSession.status}</dd>
+                          </div>
+                          <div>
+                            <dt>Amount</dt>
+                            <dd>{formatCurrency(paymentSession.amount)}</dd>
+                          </div>
+                        </dl>
+                        {paymentSession.paymentUrl ? (
+                          <a className="button button-light" href={paymentSession.paymentUrl}>
+                            Open test payment
+                            <ExternalLink aria-hidden="true" size={18} />
+                          </a>
+                        ) : null}
+                      </div>
+                    </div>
+                  ) : null}
+                </>
+              )}
             </>
           ) : null}
 
@@ -361,6 +471,14 @@ export function CheckoutPage() {
                 <AlertCircle aria-hidden="true" size={17} />
               )}
               Return policy {returnPolicyAccepted ? "accepted" : "not accepted"}
+            </span>
+            <span>
+              {paymentSession ? (
+                <CheckCircle2 aria-hidden="true" size={17} />
+              ) : (
+                <CreditCard aria-hidden="true" size={17} />
+              )}
+              {paymentSession ? paymentSession.providerReference : "Payment not started"}
             </span>
           </div>
         </aside>

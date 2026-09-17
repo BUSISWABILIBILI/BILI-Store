@@ -12,8 +12,8 @@ public sealed class SystemController : ControllerBase
     {
         return Ok(new ApiInfoResponse(
             Name: "BILI Store",
-            Version: "0.8.0",
-            Description: "Checkout, customer account, catalogue, measurement, and cart API for a custom-sewn traditional clothing ordering system.",
-            CurrentPhase: "Phase 8 - Checkout and PAXI/PEP delivery"));
+            Version: "0.9.0",
+            Description: "Payment, checkout, customer account, catalogue, measurement, and cart API for a custom-sewn traditional clothing ordering system.",
+            CurrentPhase: "Phase 9 - Payment foundation"));
     }
 }
