@@ -1,8 +1,24 @@
+import { useQuery } from "@tanstack/react-query";
 import { Ruler } from "lucide-react";
 import { SectionHeader } from "../components/ui/SectionHeader";
 import { measurementGuideItems } from "../data/storefront";
+import { getMeasurements } from "../services/catalogueApi";
 
 export function MeasurementGuidePage() {
+  const measurementsQuery = useQuery({
+    queryKey: ["measurements"],
+    queryFn: getMeasurements,
+  });
+  const guideItems =
+    measurementsQuery.data && measurementsQuery.data.length > 0
+      ? measurementsQuery.data.map((measurement) => ({
+          name: measurement.name,
+          summary: measurement.description,
+          steps: [measurement.instructions],
+          tip: measurement.tip,
+        }))
+      : measurementGuideItems;
+
   return (
     <div className="stack-xl">
       <section className="guide-hero">
@@ -25,10 +41,15 @@ export function MeasurementGuidePage() {
         <SectionHeader
           eyebrow="Measurement instructions"
           title="Clear, repeatable steps reduce ordering mistakes."
-          description="The placeholders below are intentionally structured so final diagrams or photos can be dropped in later without rewriting the page."
+          description="These cards now load measurement definitions from the backend when the API is running."
         />
+        {measurementsQuery.isError ? (
+          <p className="inline-alert">
+            Measurement cards are using local preview copy because the API is not reachable.
+          </p>
+        ) : null}
         <div className="measurement-grid">
-          {measurementGuideItems.map((item) => (
+          {guideItems.map((item) => (
             <article className="measurement-card" key={item.name}>
               <div className="measurement-illustration" aria-hidden="true">
                 <Ruler size={30} />

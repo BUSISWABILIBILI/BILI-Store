@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, CheckCircle2, MapPin, Ruler, ShieldCheck, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CategoryTile } from "../components/home/CategoryTile";
@@ -7,8 +8,16 @@ import { OrderingStepCard } from "../components/home/OrderingStepCard";
 import { ApiStatusPanel } from "../components/ui/ApiStatusPanel";
 import { SectionHeader } from "../components/ui/SectionHeader";
 import { featuredProducts, heroImage, orderingSteps, storeCategories } from "../data/storefront";
+import { getProducts } from "../services/catalogueApi";
 
 export function HomePage() {
+  const featuredQuery = useQuery({
+    queryKey: ["products", "featured-home"],
+    queryFn: () => getProducts({ featured: true }),
+  });
+  const visibleFeaturedProducts =
+    featuredQuery.data && featuredQuery.data.length > 0 ? featuredQuery.data : featuredProducts;
+
   const heroStyle = {
     "--hero-image": `url(${heroImage})`,
   } as CSSProperties;
@@ -74,10 +83,15 @@ export function HomePage() {
         <SectionHeader
           eyebrow="Featured outfit previews"
           title="A catalogue foundation that already feels shoppable."
-          description="These are Phase 3 preview cards. In Phase 4 they will be replaced by products loaded from real backend endpoints."
+          description="These cards now ask the backend for featured products. Preview data only appears if the API is offline during local design work."
         />
+        {featuredQuery.isError ? (
+          <p className="inline-alert">
+            Featured products are using local preview data because the API is not reachable.
+          </p>
+        ) : null}
         <div className="product-grid">
-          {featuredProducts.map((product) => (
+          {visibleFeaturedProducts.map((product) => (
             <FeaturedProductCard product={product} key={product.id} />
           ))}
         </div>

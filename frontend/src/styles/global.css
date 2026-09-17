@@ -669,7 +669,7 @@ p {
   align-items: center;
   display: grid;
   gap: 1rem;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
 }
 
 .search-shell {
@@ -693,13 +693,60 @@ p {
   gap: 0.7rem;
 }
 
-.pill-row a {
+.pill-row a,
+.pill-button {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 999px;
   color: var(--color-brand);
+  cursor: pointer;
   font-weight: 900;
   padding: 0.65rem 0.9rem;
+}
+
+.pill-button-active {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: var(--color-paper);
+}
+
+.inline-alert {
+  background: #fff3d6;
+  border: 1px solid rgb(198 154 53 / 42%);
+  border-radius: 6px;
+  color: #6c4a00;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+.product-detail-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 1.25rem;
+  padding: 2rem;
+}
+
+.product-detail-panel h2 {
+  font-size: 2.35rem;
+}
+
+.detail-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.detail-facts span {
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-brand);
+  font-weight: 900;
+  padding: 0.55rem 0.75rem;
 }
 
 .guide-hero {

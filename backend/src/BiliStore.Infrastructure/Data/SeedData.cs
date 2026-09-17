@@ -53,6 +53,105 @@ internal static class SeedData
             Measurement(MeasurementTypeIds.SkirtLength, "Skirt length", "skirt_length", 9, "Measure from the waist to the preferred skirt hem.", "Start at the natural waist and measure down to the desired finish point.", "Decide on the length before measuring."),
             Measurement(MeasurementTypeIds.DressLength, "Dress length", "dress_length", 10, "Measure from the shoulder or waist depending on dress style.", "For shoulder-to-hem dresses, start at the shoulder and measure down to the desired hem.", "Confirm whether the design uses shoulder or waist length."),
             Measurement(MeasurementTypeIds.Height, "Height", "height", 11, "Measure full body height.", "Stand straight against a wall without shoes and measure from floor to top of head.", "Keep heels, back, and head aligned against the wall."));
+
+        builder.Entity<Product>().HasData(
+            Product(ProductIds.BurgundyDress, "Burgundy Imvunulo Dress", "burgundy-imvunulo-dress", "A fitted custom dress with structured sleeves and patterned panel detailing for ceremonies, weddings, and formal celebrations.", 1850m, "Dress", 14, true, "Structured satin blend with traditional patterned contrast panels."),
+            Product(ProductIds.CharcoalSuit, "Charcoal Traditional Suit", "charcoal-traditional-suit", "A tailored jacket and trouser set with refined traditional front-panel detail and a clean modern fit.", 2450m, "Suit", 16, true, "Suiting fabric with embroidered or printed traditional trim."),
+            Product(ProductIds.IvoryTwoPiece, "Ivory Occasion Two-Piece", "ivory-occasion-two-piece", "A peplum top and skirt pairing designed for weddings, parties, and premium occasion wear.", 2100m, "Two-piece outfit", 15, true, "Textured ivory fabric with soft structure and custom trim options."),
+            Product(ProductIds.FamilySet, "Family Celebration Set", "family-celebration-set", "A coordinated traditional set foundation for children and family event outfits.", 980m, "Traditional set", 10, true, "Cotton blend with optional matching patterned inserts."),
+            Product(ProductIds.GirlsSkirtSet, "Girls Heritage Skirt Set", "girls-heritage-skirt-set", "A bright custom skirt and top set for birthdays, school celebrations, and cultural events.", 860m, "Skirt set", 8, false, "Soft cotton blend with decorative traditional fabric panels."),
+            Product(ProductIds.NavyShirt, "Navy Panel Shirt", "navy-panel-shirt", "A smart custom shirt with contrast front panel detail for events and everyday traditional styling.", 720m, "Shirt", 7, false, "Breathable cotton shirting with contrast detail."),
+            Product(ProductIds.GoldJumpsuit, "Gold Detail Jumpsuit", "gold-detail-jumpsuit", "A modern custom jumpsuit with a fitted bodice, wide-leg silhouette, and statement detailing.", 1950m, "Jumpsuit", 13, false, "Crepe blend with decorative gold-inspired detailing."),
+            Product(ProductIds.BoysShirtShorts, "Boys Shirt and Shorts Set", "boys-shirt-shorts-set", "A comfortable custom shirt and shorts set for young boys attending family ceremonies.", 690m, "Shorts set", 7, false, "Cotton blend with contrast trim."));
+
+        builder.Entity<ProductImage>().HasData(
+            ProductImage(ProductImageIds.BurgundyDressPrimary, ProductIds.BurgundyDress, "/images/bili-atelier-hero.png", "Burgundy custom traditional dress displayed in the BILI Store atelier", 1, true),
+            ProductImage(ProductImageIds.CharcoalSuitPrimary, ProductIds.CharcoalSuit, "/images/bili-atelier-hero.png", "Charcoal traditional suit displayed in the BILI Store atelier", 1, true),
+            ProductImage(ProductImageIds.IvoryTwoPiecePrimary, ProductIds.IvoryTwoPiece, "/images/bili-atelier-hero.png", "Ivory occasion two-piece displayed in the BILI Store atelier", 1, true),
+            ProductImage(ProductImageIds.FamilySetPrimary, ProductIds.FamilySet, "/images/bili-atelier-hero.png", "Family traditional celebration set displayed in the BILI Store atelier", 1, true),
+            ProductImage(ProductImageIds.GirlsSkirtSetPrimary, ProductIds.GirlsSkirtSet, "/images/bili-atelier-hero.png", "Girls heritage skirt set displayed in the BILI Store atelier", 1, true),
+            ProductImage(ProductImageIds.NavyShirtPrimary, ProductIds.NavyShirt, "/images/bili-atelier-hero.png", "Navy panel shirt displayed in the BILI Store atelier", 1, true),
+            ProductImage(ProductImageIds.GoldJumpsuitPrimary, ProductIds.GoldJumpsuit, "/images/bili-atelier-hero.png", "Gold detail jumpsuit displayed in the BILI Store atelier", 1, true),
+            ProductImage(ProductImageIds.BoysShirtShortsPrimary, ProductIds.BoysShirtShorts, "/images/bili-atelier-hero.png", "Boys shirt and shorts set displayed in the BILI Store atelier", 1, true));
+
+        builder.Entity<ProductCategory>().HasData(
+            ProductCategory(ProductIds.BurgundyDress, CategoryIds.Women),
+            ProductCategory(ProductIds.BurgundyDress, CategoryIds.Dresses),
+            ProductCategory(ProductIds.CharcoalSuit, CategoryIds.Men),
+            ProductCategory(ProductIds.CharcoalSuit, CategoryIds.Suits),
+            ProductCategory(ProductIds.IvoryTwoPiece, CategoryIds.Women),
+            ProductCategory(ProductIds.IvoryTwoPiece, CategoryIds.TwoPiece),
+            ProductCategory(ProductIds.FamilySet, CategoryIds.Boys),
+            ProductCategory(ProductIds.FamilySet, CategoryIds.TraditionalSets),
+            ProductCategory(ProductIds.GirlsSkirtSet, CategoryIds.Girls),
+            ProductCategory(ProductIds.GirlsSkirtSet, CategoryIds.Skirts),
+            ProductCategory(ProductIds.NavyShirt, CategoryIds.Men),
+            ProductCategory(ProductIds.NavyShirt, CategoryIds.Shirts),
+            ProductCategory(ProductIds.GoldJumpsuit, CategoryIds.Women),
+            ProductCategory(ProductIds.GoldJumpsuit, CategoryIds.Jumpsuits),
+            ProductCategory(ProductIds.BoysShirtShorts, CategoryIds.Boys),
+            ProductCategory(ProductIds.BoysShirtShorts, CategoryIds.Shorts),
+            ProductCategory(ProductIds.BoysShirtShorts, CategoryIds.Shirts));
+
+        builder.Entity<ProductColour>().HasData(
+            ProductColour(ProductIds.BurgundyDress, ColourIds.Burgundy),
+            ProductColour(ProductIds.BurgundyDress, ColourIds.Gold),
+            ProductColour(ProductIds.BurgundyDress, ColourIds.Black),
+            ProductColour(ProductIds.CharcoalSuit, ColourIds.Black),
+            ProductColour(ProductIds.CharcoalSuit, ColourIds.Navy),
+            ProductColour(ProductIds.CharcoalSuit, ColourIds.Gold),
+            ProductColour(ProductIds.IvoryTwoPiece, ColourIds.White),
+            ProductColour(ProductIds.IvoryTwoPiece, ColourIds.Beige),
+            ProductColour(ProductIds.IvoryTwoPiece, ColourIds.Brown),
+            ProductColour(ProductIds.FamilySet, ColourIds.Black),
+            ProductColour(ProductIds.FamilySet, ColourIds.Burgundy),
+            ProductColour(ProductIds.FamilySet, ColourIds.White),
+            ProductColour(ProductIds.GirlsSkirtSet, ColourIds.Red),
+            ProductColour(ProductIds.GirlsSkirtSet, ColourIds.Yellow),
+            ProductColour(ProductIds.GirlsSkirtSet, ColourIds.Green),
+            ProductColour(ProductIds.NavyShirt, ColourIds.Navy),
+            ProductColour(ProductIds.NavyShirt, ColourIds.White),
+            ProductColour(ProductIds.NavyShirt, ColourIds.Gold),
+            ProductColour(ProductIds.GoldJumpsuit, ColourIds.Gold),
+            ProductColour(ProductIds.GoldJumpsuit, ColourIds.Black),
+            ProductColour(ProductIds.GoldJumpsuit, ColourIds.Brown),
+            ProductColour(ProductIds.BoysShirtShorts, ColourIds.Blue),
+            ProductColour(ProductIds.BoysShirtShorts, ColourIds.White),
+            ProductColour(ProductIds.BoysShirtShorts, ColourIds.Burgundy));
+
+        builder.Entity<ProductMeasurementRequirement>().HasData(
+            Requirement(RequirementIds.BurgundyDressBust, ProductIds.BurgundyDress, MeasurementTypeIds.BustChest, "Needed so the bodice fits comfortably."),
+            Requirement(RequirementIds.BurgundyDressWaist, ProductIds.BurgundyDress, MeasurementTypeIds.Waist, "Needed for the fitted waistline."),
+            Requirement(RequirementIds.BurgundyDressHips, ProductIds.BurgundyDress, MeasurementTypeIds.Hips, "Needed for skirt shaping."),
+            Requirement(RequirementIds.BurgundyDressShoulder, ProductIds.BurgundyDress, MeasurementTypeIds.ShoulderWidth, "Needed for sleeve and neckline balance."),
+            Requirement(RequirementIds.BurgundyDressLength, ProductIds.BurgundyDress, MeasurementTypeIds.DressLength, "Choose the final dress length."),
+            Requirement(RequirementIds.CharcoalSuitChest, ProductIds.CharcoalSuit, MeasurementTypeIds.BustChest, "Used as the chest measurement for the jacket."),
+            Requirement(RequirementIds.CharcoalSuitWaist, ProductIds.CharcoalSuit, MeasurementTypeIds.Waist, "Needed for both jacket and trouser fit."),
+            Requirement(RequirementIds.CharcoalSuitShoulder, ProductIds.CharcoalSuit, MeasurementTypeIds.ShoulderWidth, "Needed for jacket structure."),
+            Requirement(RequirementIds.CharcoalSuitSleeve, ProductIds.CharcoalSuit, MeasurementTypeIds.SleeveLength, "Needed for jacket sleeve length."),
+            Requirement(RequirementIds.CharcoalSuitTrouserLength, ProductIds.CharcoalSuit, MeasurementTypeIds.TrouserLength, "Choose the preferred trouser finish."),
+            Requirement(RequirementIds.IvoryTwoPieceBust, ProductIds.IvoryTwoPiece, MeasurementTypeIds.BustChest, "Needed for the top fit."),
+            Requirement(RequirementIds.IvoryTwoPieceWaist, ProductIds.IvoryTwoPiece, MeasurementTypeIds.Waist, "Needed for top and skirt fit."),
+            Requirement(RequirementIds.IvoryTwoPieceHips, ProductIds.IvoryTwoPiece, MeasurementTypeIds.Hips, "Needed for skirt shaping."),
+            Requirement(RequirementIds.IvoryTwoPieceSkirtLength, ProductIds.IvoryTwoPiece, MeasurementTypeIds.SkirtLength, "Choose the preferred skirt length."),
+            Requirement(RequirementIds.FamilySetChest, ProductIds.FamilySet, MeasurementTypeIds.BustChest, "Used as the chest measurement for the top."),
+            Requirement(RequirementIds.FamilySetWaist, ProductIds.FamilySet, MeasurementTypeIds.Waist, "Needed for trousers or bottoms."),
+            Requirement(RequirementIds.FamilySetShoulder, ProductIds.FamilySet, MeasurementTypeIds.ShoulderWidth, "Needed for top fit."),
+            Requirement(RequirementIds.FamilySetHeight, ProductIds.FamilySet, MeasurementTypeIds.Height, "Helps scale the child garment correctly."),
+            Requirement(RequirementIds.GirlsSkirtSetWaist, ProductIds.GirlsSkirtSet, MeasurementTypeIds.Waist, "Needed for skirt waistband."),
+            Requirement(RequirementIds.GirlsSkirtSetHips, ProductIds.GirlsSkirtSet, MeasurementTypeIds.Hips, "Needed for skirt ease."),
+            Requirement(RequirementIds.GirlsSkirtSetSkirtLength, ProductIds.GirlsSkirtSet, MeasurementTypeIds.SkirtLength, "Choose the preferred skirt length."),
+            Requirement(RequirementIds.NavyShirtChest, ProductIds.NavyShirt, MeasurementTypeIds.BustChest, "Used as the chest measurement for the shirt."),
+            Requirement(RequirementIds.NavyShirtNeck, ProductIds.NavyShirt, MeasurementTypeIds.Neck, "Needed for collar comfort."),
+            Requirement(RequirementIds.NavyShirtShoulder, ProductIds.NavyShirt, MeasurementTypeIds.ShoulderWidth, "Needed for shirt shoulder fit."),
+            Requirement(RequirementIds.NavyShirtSleeve, ProductIds.NavyShirt, MeasurementTypeIds.SleeveLength, "Choose the preferred sleeve length."),
+            Requirement(RequirementIds.GoldJumpsuitBust, ProductIds.GoldJumpsuit, MeasurementTypeIds.BustChest, "Needed for bodice fit."),
+            Requirement(RequirementIds.GoldJumpsuitWaist, ProductIds.GoldJumpsuit, MeasurementTypeIds.Waist, "Needed for fitted waist shaping."),
+            Requirement(RequirementIds.GoldJumpsuitHips, ProductIds.GoldJumpsuit, MeasurementTypeIds.Hips, "Needed for lower-body ease."),
+            Requirement(RequirementIds.GoldJumpsuitInseam, ProductIds.GoldJumpsuit, MeasurementTypeIds.Inseam, "Needed for jumpsuit trouser fit."),
+            Requirement(RequirementIds.BoysSetChest, ProductIds.BoysShirtShorts, MeasurementTypeIds.BustChest, "Used as the chest measurement for the shirt."),
+            Requirement(RequirementIds.BoysSetWaist, ProductIds.BoysShirtShorts, MeasurementTypeIds.Waist, "Needed for shorts fit."),
+            Requirement(RequirementIds.BoysSetHeight, ProductIds.BoysShirtShorts, MeasurementTypeIds.Height, "Helps scale the child garment correctly."));
     }
 
     private static Category Category(Guid id, string name, string slug, int displayOrder)
@@ -93,6 +192,79 @@ internal static class SeedData
             Instructions = instructions,
             Tip = tip,
             CreatedAt = SeededAt
+        };
+    }
+
+    private static Product Product(
+        Guid id,
+        string name,
+        string slug,
+        string description,
+        decimal price,
+        string clothingType,
+        int estimatedProductionDays,
+        bool isFeatured,
+        string fabricDescription)
+    {
+        return new Product
+        {
+            Id = id,
+            Name = name,
+            Slug = slug,
+            Description = description,
+            Price = price,
+            ClothingType = clothingType,
+            EstimatedProductionDays = estimatedProductionDays,
+            IsAvailable = true,
+            IsFeatured = isFeatured,
+            AllowsCustomColor = true,
+            FabricDescription = fabricDescription,
+            CreatedAt = SeededAt
+        };
+    }
+
+    private static ProductImage ProductImage(Guid id, Guid productId, string url, string altText, int displayOrder, bool isPrimary)
+    {
+        return new ProductImage
+        {
+            Id = id,
+            ProductId = productId,
+            Url = url,
+            AltText = altText,
+            DisplayOrder = displayOrder,
+            IsPrimary = isPrimary
+        };
+    }
+
+    private static ProductCategory ProductCategory(Guid productId, Guid categoryId)
+    {
+        return new ProductCategory
+        {
+            ProductId = productId,
+            CategoryId = categoryId
+        };
+    }
+
+    private static ProductColour ProductColour(Guid productId, Guid colourId)
+    {
+        return new ProductColour
+        {
+            ProductId = productId,
+            ColourId = colourId
+        };
+    }
+
+    private static ProductMeasurementRequirement Requirement(Guid id, Guid productId, Guid measurementTypeId, string helpText)
+    {
+        return new ProductMeasurementRequirement
+        {
+            Id = id,
+            ProductId = productId,
+            MeasurementTypeId = measurementTypeId,
+            IsRequired = true,
+            MinValueCm = 10,
+            MaxValueCm = 250,
+            HelpText = helpText
         };
     }
 
@@ -146,5 +318,64 @@ internal static class SeedData
         public static readonly Guid DressLength = Guid.Parse("30000000-0000-0000-0000-000000000010");
         public static readonly Guid Height = Guid.Parse("30000000-0000-0000-0000-000000000011");
     }
-}
 
+    private static class ProductIds
+    {
+        public static readonly Guid BurgundyDress = Guid.Parse("40000000-0000-0000-0000-000000000001");
+        public static readonly Guid CharcoalSuit = Guid.Parse("40000000-0000-0000-0000-000000000002");
+        public static readonly Guid IvoryTwoPiece = Guid.Parse("40000000-0000-0000-0000-000000000003");
+        public static readonly Guid FamilySet = Guid.Parse("40000000-0000-0000-0000-000000000004");
+        public static readonly Guid GirlsSkirtSet = Guid.Parse("40000000-0000-0000-0000-000000000005");
+        public static readonly Guid NavyShirt = Guid.Parse("40000000-0000-0000-0000-000000000006");
+        public static readonly Guid GoldJumpsuit = Guid.Parse("40000000-0000-0000-0000-000000000007");
+        public static readonly Guid BoysShirtShorts = Guid.Parse("40000000-0000-0000-0000-000000000008");
+    }
+
+    private static class ProductImageIds
+    {
+        public static readonly Guid BurgundyDressPrimary = Guid.Parse("50000000-0000-0000-0000-000000000001");
+        public static readonly Guid CharcoalSuitPrimary = Guid.Parse("50000000-0000-0000-0000-000000000002");
+        public static readonly Guid IvoryTwoPiecePrimary = Guid.Parse("50000000-0000-0000-0000-000000000003");
+        public static readonly Guid FamilySetPrimary = Guid.Parse("50000000-0000-0000-0000-000000000004");
+        public static readonly Guid GirlsSkirtSetPrimary = Guid.Parse("50000000-0000-0000-0000-000000000005");
+        public static readonly Guid NavyShirtPrimary = Guid.Parse("50000000-0000-0000-0000-000000000006");
+        public static readonly Guid GoldJumpsuitPrimary = Guid.Parse("50000000-0000-0000-0000-000000000007");
+        public static readonly Guid BoysShirtShortsPrimary = Guid.Parse("50000000-0000-0000-0000-000000000008");
+    }
+
+    private static class RequirementIds
+    {
+        public static readonly Guid BurgundyDressBust = Guid.Parse("60000000-0000-0000-0000-000000000001");
+        public static readonly Guid BurgundyDressWaist = Guid.Parse("60000000-0000-0000-0000-000000000002");
+        public static readonly Guid BurgundyDressHips = Guid.Parse("60000000-0000-0000-0000-000000000003");
+        public static readonly Guid BurgundyDressShoulder = Guid.Parse("60000000-0000-0000-0000-000000000004");
+        public static readonly Guid BurgundyDressLength = Guid.Parse("60000000-0000-0000-0000-000000000005");
+        public static readonly Guid CharcoalSuitChest = Guid.Parse("60000000-0000-0000-0000-000000000006");
+        public static readonly Guid CharcoalSuitWaist = Guid.Parse("60000000-0000-0000-0000-000000000007");
+        public static readonly Guid CharcoalSuitShoulder = Guid.Parse("60000000-0000-0000-0000-000000000008");
+        public static readonly Guid CharcoalSuitSleeve = Guid.Parse("60000000-0000-0000-0000-000000000009");
+        public static readonly Guid CharcoalSuitTrouserLength = Guid.Parse("60000000-0000-0000-0000-000000000010");
+        public static readonly Guid IvoryTwoPieceBust = Guid.Parse("60000000-0000-0000-0000-000000000011");
+        public static readonly Guid IvoryTwoPieceWaist = Guid.Parse("60000000-0000-0000-0000-000000000012");
+        public static readonly Guid IvoryTwoPieceHips = Guid.Parse("60000000-0000-0000-0000-000000000013");
+        public static readonly Guid IvoryTwoPieceSkirtLength = Guid.Parse("60000000-0000-0000-0000-000000000014");
+        public static readonly Guid FamilySetChest = Guid.Parse("60000000-0000-0000-0000-000000000015");
+        public static readonly Guid FamilySetWaist = Guid.Parse("60000000-0000-0000-0000-000000000016");
+        public static readonly Guid FamilySetShoulder = Guid.Parse("60000000-0000-0000-0000-000000000017");
+        public static readonly Guid FamilySetHeight = Guid.Parse("60000000-0000-0000-0000-000000000018");
+        public static readonly Guid GirlsSkirtSetWaist = Guid.Parse("60000000-0000-0000-0000-000000000019");
+        public static readonly Guid GirlsSkirtSetHips = Guid.Parse("60000000-0000-0000-0000-000000000020");
+        public static readonly Guid GirlsSkirtSetSkirtLength = Guid.Parse("60000000-0000-0000-0000-000000000021");
+        public static readonly Guid NavyShirtChest = Guid.Parse("60000000-0000-0000-0000-000000000022");
+        public static readonly Guid NavyShirtNeck = Guid.Parse("60000000-0000-0000-0000-000000000023");
+        public static readonly Guid NavyShirtShoulder = Guid.Parse("60000000-0000-0000-0000-000000000024");
+        public static readonly Guid NavyShirtSleeve = Guid.Parse("60000000-0000-0000-0000-000000000025");
+        public static readonly Guid GoldJumpsuitBust = Guid.Parse("60000000-0000-0000-0000-000000000026");
+        public static readonly Guid GoldJumpsuitWaist = Guid.Parse("60000000-0000-0000-0000-000000000027");
+        public static readonly Guid GoldJumpsuitHips = Guid.Parse("60000000-0000-0000-0000-000000000028");
+        public static readonly Guid GoldJumpsuitInseam = Guid.Parse("60000000-0000-0000-0000-000000000029");
+        public static readonly Guid BoysSetChest = Guid.Parse("60000000-0000-0000-0000-000000000030");
+        public static readonly Guid BoysSetWaist = Guid.Parse("60000000-0000-0000-0000-000000000031");
+        public static readonly Guid BoysSetHeight = Guid.Parse("60000000-0000-0000-0000-000000000032");
+    }
+}

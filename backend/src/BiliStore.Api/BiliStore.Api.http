@@ -4,3 +4,38 @@ GET {{BiliStore.Api_HostAddress}}/api/health
 Accept: application/json
 
 ###
+
+GET {{BiliStore.Api_HostAddress}}/api/system
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/products
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/products?category=women&featured=true
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/products/burgundy-imvunulo-dress
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/categories
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/colours
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/measurements
+Accept: application/json
+
+###

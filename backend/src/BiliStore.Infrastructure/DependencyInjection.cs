@@ -1,3 +1,5 @@
+using BiliStore.Application.Catalogue;
+using BiliStore.Infrastructure.Catalogue;
 using BiliStore.Infrastructure.Data;
 using BiliStore.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -32,6 +34,8 @@ public static class DependencyInjection
             })
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<BiliStoreDbContext>();
+
+        services.AddScoped<ICatalogueService, CatalogueService>();
 
         return services;
     }
