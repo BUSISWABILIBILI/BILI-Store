@@ -4,7 +4,7 @@ BILI Store is a planned full-stack e-commerce ordering system for custom-sewn tr
 
 ## Current Phase
 
-Phase 6 is complete as the shopping cart foundation. The repository now contains a persisted React cart, add-to-cart from validated product customisation, and a backend cart quote endpoint for trusted totals.
+Phase 7 is complete as the customer account foundation. The repository now contains registration, login, JWT sessions, profile editing, account-backed saved measurements, and order-history foundation.
 
 ## Source Brief
 
@@ -60,6 +60,14 @@ See `docs/PHASE_6_CART.md` for:
 - Add-to-cart from product customisation
 - Cart page item/totals behaviour
 - Run/test commands and verification results
+
+See `docs/PHASE_7_CUSTOMER_ACCOUNTS.md` for:
+
+- Register/login and JWT authentication
+- Customer profile endpoints
+- Account-backed saved measurement profiles
+- Order-history foundation
+- Frontend auth store and account page behaviour
 
 ## Local Development
 

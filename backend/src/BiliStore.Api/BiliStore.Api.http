@@ -79,3 +79,77 @@ Content-Type: application/json
 }
 
 ###
+
+POST {{BiliStore.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Demo",
+  "lastName": "Customer",
+  "email": "demo.customer@example.com",
+  "phone": "0821234567",
+  "password": "Password1",
+  "confirmPassword": "Password1"
+}
+
+###
+
+POST {{BiliStore.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo.customer@example.com",
+  "password": "Password1"
+}
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/auth/me
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+PUT {{BiliStore.Api_HostAddress}}/api/auth/me
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "firstName": "Demo",
+  "lastName": "Customer",
+  "phone": "0821234567"
+}
+
+###
+
+POST {{BiliStore.Api_HostAddress}}/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "demo.customer@example.com"
+}
+
+###
+
+POST {{BiliStore.Api_HostAddress}}/api/customers/me/measurement-profiles
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "My Measurements",
+  "isDefault": true,
+  "notes": "Saved from product detail measurement form.",
+  "measurements": [
+    { "measurementKey": "bust_chest", "valueCm": 94 },
+    { "measurementKey": "waist", "valueCm": 76 },
+    { "measurementKey": "hips", "valueCm": 104 }
+  ]
+}
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/customers/me/orders
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
