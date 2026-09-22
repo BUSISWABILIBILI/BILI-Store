@@ -4,6 +4,7 @@
 @CategoryId = 30000000-0000-0000-0000-000000000001
 @ColourId = 20000000-0000-0000-0000-000000000007
 @MeasurementTypeId = 40000000-0000-0000-0000-000000000001
+@CustomerProfileId = 00000000-0000-0000-0000-000000000000
 
 GET {{BiliStore.Api_HostAddress}}/api/health
 Accept: application/json
@@ -226,6 +227,23 @@ Accept: application/json
 
 ###
 
+GET {{BiliStore.Api_HostAddress}}/api/admin/dashboard
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/customers
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/customers/{{CustomerProfileId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
 GET {{BiliStore.Api_HostAddress}}/api/admin/orders
 Authorization: Bearer {{accessToken}}
 Accept: application/json

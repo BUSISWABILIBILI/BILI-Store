@@ -2413,3 +2413,190 @@ p {
     min-height: 240px;
   }
 }
+
+.admin-stat-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 0.45rem;
+  min-height: 150px;
+  padding: 1rem;
+}
+
+.admin-stat-card svg,
+.admin-link-grid svg,
+.admin-subsection > svg {
+  color: var(--color-brand);
+}
+
+.admin-stat-card span,
+.admin-status-list span,
+.admin-customer-row small,
+.admin-subsection h3 {
+  color: var(--color-muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-stat-card strong {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.admin-stat-card small {
+  color: var(--color-muted);
+  font-weight: 800;
+}
+
+.admin-link-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-link-grid a {
+  align-items: center;
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: flex;
+  gap: 0.65rem;
+  min-height: 58px;
+  padding: 0.9rem;
+}
+
+.admin-link-grid a:hover {
+  border-color: var(--color-brand);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-link-grid span {
+  font-weight: 900;
+}
+
+.admin-status-list,
+.admin-customer-list,
+.admin-measurement-profile-list,
+.admin-measurement-chip-row {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.admin-status-list div {
+  align-items: center;
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  min-height: 54px;
+  padding: 0.8rem;
+}
+
+.admin-search-shell {
+  min-height: 46px;
+}
+
+.admin-customer-row {
+  align-items: center;
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-ink);
+  cursor: pointer;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  min-height: 64px;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.admin-customer-row.active,
+.admin-customer-row:hover {
+  border-color: var(--color-brand);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-customer-row span,
+.admin-customer-row strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-subsection {
+  background: #fbf5ee;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.admin-subsection h3 {
+  margin-bottom: 0;
+}
+
+.admin-measurement-profile-list article {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.9rem;
+}
+
+.admin-measurement-profile-list article > div:first-child {
+  align-items: center;
+  display: flex;
+  gap: 0.7rem;
+  justify-content: space-between;
+}
+
+.admin-measurement-profile-list p {
+  margin-bottom: 0;
+}
+
+.admin-measurement-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.admin-measurement-chip-row span {
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.4rem 0.6rem;
+}
+
+@media (max-width: 1080px) {
+  .admin-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-stat-grid,
+  .admin-link-grid,
+  .admin-customer-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-measurement-profile-list article > div:first-child {
+    align-items: stretch;
+    display: grid;
+  }
+}

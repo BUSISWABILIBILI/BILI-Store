@@ -150,3 +150,91 @@ export type UpsertAdminProductRequest = {
   colourIds: string[];
   measurementRequirements: AdminProductMeasurementRequirementInput[];
 };
+
+export type AdminDashboardStatusCount = {
+  status: string;
+  count: number;
+};
+
+export type AdminDashboardRecentOrder = {
+  orderNumber: string;
+  customerName: string;
+  total: number;
+  orderStatus: string;
+  paymentStatus: string;
+  orderDate: string;
+};
+
+export type AdminDashboardProductAlert = {
+  id: string;
+  name: string;
+  slug: string;
+  isAvailable: boolean;
+  isFeatured: boolean;
+  issue: string;
+};
+
+export type AdminDashboard = {
+  orderCount: number;
+  pendingOrderCount: number;
+  inProductionOrderCount: number;
+  completedOrderCount: number;
+  paidRevenue: number;
+  pendingRevenue: number;
+  customerCount: number;
+  guestOrderCount: number;
+  availableProductCount: number;
+  unavailableProductCount: number;
+  returnRequestCount: number;
+  openReturnRequestCount: number;
+  ordersByStatus: AdminDashboardStatusCount[];
+  paymentsByStatus: AdminDashboardStatusCount[];
+  recentOrders: AdminDashboardRecentOrder[];
+  productAlerts: AdminDashboardProductAlert[];
+};
+
+export type AdminCustomerSummary = {
+  id: string;
+  applicationUserId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  isActive: boolean;
+  createdAt: string;
+  measurementProfileCount: number;
+  orderCount: number;
+  totalSpent: number;
+  latestOrderDate: string | null;
+};
+
+export type AdminCustomerOrderSummary = {
+  id: string;
+  orderNumber: string;
+  orderDate: string;
+  total: number;
+  paymentStatus: string;
+  orderStatus: string;
+  itemCount: number;
+};
+
+export type AdminCustomerMeasurementValue = {
+  measurementName: string;
+  measurementKey: string;
+  valueCm: number;
+  unit: string;
+};
+
+export type AdminCustomerMeasurementProfile = {
+  id: string;
+  name: string;
+  isDefault: boolean;
+  notes: string | null;
+  measurementCount: number;
+  measurements: AdminCustomerMeasurementValue[];
+};
+
+export type AdminCustomerDetails = AdminCustomerSummary & {
+  orders: AdminCustomerOrderSummary[];
+  measurementProfiles: AdminCustomerMeasurementProfile[];
+};

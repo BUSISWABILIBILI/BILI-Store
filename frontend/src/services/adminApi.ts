@@ -1,6 +1,9 @@
 import type {
   AdminCategory,
   AdminColour,
+  AdminCustomerDetails,
+  AdminCustomerSummary,
+  AdminDashboard,
   AdminOrderDetails,
   AdminOrderSummary,
   AdminPaymentSummary,
@@ -109,5 +112,20 @@ export async function createAdminColour(request: UpsertAdminColourRequest) {
 
 export async function updateAdminColour(id: string, request: UpsertAdminColourRequest) {
   const response = await apiClient.put<AdminColour>(`/admin/colours/${id}`, request);
+  return response.data;
+}
+
+export async function getAdminDashboard() {
+  const response = await apiClient.get<AdminDashboard>("/admin/dashboard");
+  return response.data;
+}
+
+export async function getAdminCustomers() {
+  const response = await apiClient.get<AdminCustomerSummary[]>("/admin/customers");
+  return response.data;
+}
+
+export async function getAdminCustomer(id: string) {
+  const response = await apiClient.get<AdminCustomerDetails>(`/admin/customers/${id}`);
   return response.data;
 }
