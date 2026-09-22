@@ -1,4 +1,5 @@
 import { AccountPage } from "../pages/AccountPage";
+import { AdminCataloguePage } from "../pages/AdminCataloguePage";
 import { AdminOrdersPage } from "../pages/AdminOrdersPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutPage } from "../pages/CheckoutPage";
@@ -16,6 +17,7 @@ export const routes = [
   { path: "/checkout", label: "Checkout", element: CheckoutPage },
   { path: "/orders/:orderNumber", label: "Order Confirmation", element: OrderConfirmationPage },
   { path: "/admin/orders", label: "Admin Orders", element: AdminOrdersPage },
+  { path: "/admin/catalogue", label: "Admin Catalogue", element: AdminCataloguePage },
   { path: "/account", label: "Account", element: AccountPage },
   { path: "/return-policy", label: "Return Policy", element: ReturnPolicyPage },
 ] as const;

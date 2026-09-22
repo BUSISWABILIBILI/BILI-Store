@@ -47,3 +47,106 @@ export type UpdateReturnRequestStatusRequest = {
 };
 
 export type AdminOrderDetails = OrderConfirmation;
+
+export type AdminCategory = {
+  id: string;
+  name: string;
+  slug: string;
+  parentCategoryId: string | null;
+  parentCategoryName: string | null;
+  displayOrder: number;
+  isActive: boolean;
+};
+
+export type UpsertAdminCategoryRequest = {
+  name: string;
+  slug: string | null;
+  parentCategoryId: string | null;
+  displayOrder: number;
+  isActive: boolean;
+};
+
+export type AdminColour = {
+  id: string;
+  name: string;
+  hexCode: string;
+  isActive: boolean;
+};
+
+export type UpsertAdminColourRequest = {
+  name: string;
+  hexCode: string;
+  isActive: boolean;
+};
+
+export type AdminProductMeasurementRequirement = {
+  id: string;
+  measurementTypeId: string;
+  measurementName: string;
+  measurementKey: string;
+  isRequired: boolean;
+  minValueCm: number | null;
+  maxValueCm: number | null;
+  helpText: string | null;
+};
+
+export type AdminProductMeasurementRequirementInput = {
+  measurementTypeId: string;
+  isRequired: boolean;
+  minValueCm: number | null;
+  maxValueCm: number | null;
+  helpText: string | null;
+};
+
+export type AdminProductSummary = {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  clothingType: string;
+  estimatedProductionDays: number;
+  isAvailable: boolean;
+  isFeatured: boolean;
+  allowsCustomColor: boolean;
+  primaryImageUrl: string;
+  categoryNames: string[];
+  colourNames: string[];
+  requiredMeasurementNames: string[];
+};
+
+export type AdminProductDetails = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  clothingType: string;
+  estimatedProductionDays: number;
+  isAvailable: boolean;
+  isFeatured: boolean;
+  allowsCustomColor: boolean;
+  fabricDescription: string | null;
+  primaryImageUrl: string;
+  primaryImageAltText: string;
+  categoryIds: string[];
+  colourIds: string[];
+  measurementRequirements: AdminProductMeasurementRequirement[];
+};
+
+export type UpsertAdminProductRequest = {
+  name: string;
+  slug: string | null;
+  description: string;
+  price: number;
+  clothingType: string;
+  estimatedProductionDays: number;
+  isAvailable: boolean;
+  isFeatured: boolean;
+  allowsCustomColor: boolean;
+  fabricDescription: string | null;
+  primaryImageUrl: string | null;
+  primaryImageAltText: string | null;
+  categoryIds: string[];
+  colourIds: string[];
+  measurementRequirements: AdminProductMeasurementRequirementInput[];
+};

@@ -53,7 +53,12 @@ export function AppLayout() {
           <div className="nav-actions">
             {isAdmin ? (
               <NavLink className="nav-link admin-nav-link" to="/admin/orders">
-                Admin
+                Orders
+              </NavLink>
+            ) : null}
+            {isAdmin ? (
+              <NavLink className="nav-link admin-nav-link" to="/admin/catalogue">
+                Catalogue
               </NavLink>
             ) : null}
             <NavLink className="icon-button" to="/account" aria-label="Account">
@@ -83,7 +88,8 @@ export function AppLayout() {
           <Link to="/measurements">Measurements</Link>
           <Link to="/return-policy">Return Policy</Link>
           <Link to="/checkout">Checkout</Link>
-          {isAdmin ? <Link to="/admin/orders">Admin</Link> : null}
+          {isAdmin ? <Link to="/admin/orders">Admin Orders</Link> : null}
+          {isAdmin ? <Link to="/admin/catalogue">Admin Catalogue</Link> : null}
         </div>
       </footer>
     </div>

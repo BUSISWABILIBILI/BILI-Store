@@ -1,5 +1,9 @@
 @BiliStore.Api_HostAddress = http://localhost:5087
 @OrderNumber = BILI-20260917-DEMO
+@ProductId = 10000000-0000-0000-0000-000000000001
+@CategoryId = 30000000-0000-0000-0000-000000000001
+@ColourId = 20000000-0000-0000-0000-000000000007
+@MeasurementTypeId = 40000000-0000-0000-0000-000000000001
 
 GET {{BiliStore.Api_HostAddress}}/api/health
 Accept: application/json
@@ -254,6 +258,152 @@ Accept: application/json
 GET {{BiliStore.Api_HostAddress}}/api/admin/return-requests
 Authorization: Bearer {{accessToken}}
 Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/products
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/products/{{ProductId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+POST {{BiliStore.Api_HostAddress}}/api/admin/products
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Demo Custom Dress",
+  "slug": "demo-custom-dress",
+  "description": "Admin-created custom dress for testing catalogue management.",
+  "price": 1499,
+  "clothingType": "Dress",
+  "estimatedProductionDays": 14,
+  "isAvailable": true,
+  "isFeatured": false,
+  "allowsCustomColor": true,
+  "fabricDescription": "Cotton blend with decorative trim.",
+  "primaryImageUrl": "/images/bili-atelier-hero.png",
+  "primaryImageAltText": "Demo custom dress",
+  "categoryIds": ["{{CategoryId}}"],
+  "colourIds": ["{{ColourId}}"],
+  "measurementRequirements": [
+    {
+      "measurementTypeId": "{{MeasurementTypeId}}",
+      "isRequired": true,
+      "minValueCm": 60,
+      "maxValueCm": 140,
+      "helpText": "Measure while standing straight."
+    }
+  ]
+}
+
+###
+
+PUT {{BiliStore.Api_HostAddress}}/api/admin/products/{{ProductId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Custom Dress",
+  "slug": "updated-custom-dress",
+  "description": "Updated product details from the admin catalogue endpoint.",
+  "price": 1699,
+  "clothingType": "Dress",
+  "estimatedProductionDays": 16,
+  "isAvailable": true,
+  "isFeatured": true,
+  "allowsCustomColor": true,
+  "fabricDescription": "Premium cotton blend with custom trim.",
+  "primaryImageUrl": "/images/bili-atelier-hero.png",
+  "primaryImageAltText": "Updated custom dress",
+  "categoryIds": ["{{CategoryId}}"],
+  "colourIds": ["{{ColourId}}"],
+  "measurementRequirements": [
+    {
+      "measurementTypeId": "{{MeasurementTypeId}}",
+      "isRequired": true,
+      "minValueCm": 60,
+      "maxValueCm": 145,
+      "helpText": "Measure snugly, without pulling the tape tight."
+    }
+  ]
+}
+
+###
+
+DELETE {{BiliStore.Api_HostAddress}}/api/admin/products/{{ProductId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/categories
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+POST {{BiliStore.Api_HostAddress}}/api/admin/categories
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Demo Category",
+  "slug": "demo-category",
+  "parentCategoryId": null,
+  "displayOrder": 99,
+  "isActive": true
+}
+
+###
+
+PUT {{BiliStore.Api_HostAddress}}/api/admin/categories/{{CategoryId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Category",
+  "slug": "updated-category",
+  "parentCategoryId": null,
+  "displayOrder": 12,
+  "isActive": true
+}
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/colours
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+POST {{BiliStore.Api_HostAddress}}/api/admin/colours
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Demo Gold",
+  "hexCode": "#d3a33f",
+  "isActive": true
+}
+
+###
+
+PUT {{BiliStore.Api_HostAddress}}/api/admin/colours/{{ColourId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Burgundy",
+  "hexCode": "#7a2d2a",
+  "isActive": true
+}
 
 ###
 

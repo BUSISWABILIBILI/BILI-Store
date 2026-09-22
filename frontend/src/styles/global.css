@@ -34,7 +34,9 @@ a {
 
 button:focus-visible,
 a:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
   outline: 3px solid rgb(31 111 122 / 35%);
   outline-offset: 3px;
 }
@@ -1717,6 +1719,191 @@ p {
   overflow-wrap: anywhere;
 }
 
+.admin-panel-heading {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.admin-panel-heading h2 {
+  margin-bottom: 0;
+}
+
+.admin-catalogue-layout {
+  grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+}
+
+.admin-catalogue-form {
+  align-content: start;
+}
+
+.admin-product-list,
+.admin-mini-list,
+.admin-checkbox-grid,
+.admin-measurement-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.admin-product-row,
+.admin-mini-row {
+  align-items: center;
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-ink);
+  cursor: pointer;
+  min-height: 58px;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.admin-product-row {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.admin-product-row.active,
+.admin-product-row:hover,
+.admin-mini-row.active,
+.admin-mini-row:hover,
+.admin-measurement-card.active {
+  border-color: var(--color-brand);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-product-row span,
+.admin-mini-row span,
+.admin-mini-row strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-product-row small,
+.admin-field span,
+.admin-measurement-section > h3,
+.admin-relation-grid h3 {
+  color: var(--color-muted);
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-form-grid,
+.admin-toggle-grid,
+.admin-relation-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-ink);
+  min-height: 42px;
+  padding: 0.65rem 0.75rem;
+  width: 100%;
+}
+
+.admin-field textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.admin-field-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-check-row {
+  align-items: center;
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 0.55rem;
+  min-height: 42px;
+  padding: 0.65rem 0.75rem;
+}
+
+.admin-check-row input {
+  accent-color: var(--color-brand);
+  flex: 0 0 auto;
+  height: 18px;
+  width: 18px;
+}
+
+.admin-swatch {
+  background: var(--admin-swatch-color);
+  border: 1px solid rgb(23 20 18 / 18%);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 62%);
+  flex: 0 0 auto;
+  height: 22px;
+  width: 22px;
+}
+
+.admin-measurement-section {
+  background: #fbf5ee;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.admin-measurement-section > svg {
+  color: var(--color-brand);
+}
+
+.admin-measurement-section > h3,
+.admin-relation-grid h3 {
+  margin-bottom: 0;
+}
+
+.admin-measurement-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-measurement-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem;
+}
+
+.admin-measurement-fields {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-mini-row {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: space-between;
+}
+
 .account-page {
   display: grid;
   gap: 1.5rem;
@@ -2098,8 +2285,12 @@ p {
   .account-grid,
   .order-detail-grid,
   .admin-layout,
+  .admin-catalogue-layout,
   .admin-detail-grid,
   .admin-status-form,
+  .admin-form-grid,
+  .admin-relation-grid,
+  .admin-measurement-grid,
   .api-panel,
   .site-footer {
     grid-template-columns: 1fr;
@@ -2171,7 +2362,11 @@ p {
   .checkout-form-grid,
   .checkout-steps,
   .admin-order-row,
+  .admin-product-row,
+  .admin-toggle-grid,
+  .admin-mini-row,
   .admin-item-list article,
+  .admin-measurement-fields,
   .custom-colour-inputs,
   .cart-preview-grid,
   .newsletter-form,

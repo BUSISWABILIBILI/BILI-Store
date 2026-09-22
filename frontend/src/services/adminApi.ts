@@ -1,10 +1,17 @@
 import type {
+  AdminCategory,
+  AdminColour,
   AdminOrderDetails,
   AdminOrderSummary,
   AdminPaymentSummary,
+  AdminProductDetails,
+  AdminProductSummary,
   AdminReturnRequestSummary,
   UpdateAdminOrderStatusRequest,
   UpdateReturnRequestStatusRequest,
+  UpsertAdminCategoryRequest,
+  UpsertAdminColourRequest,
+  UpsertAdminProductRequest,
 } from "../types/admin";
 import { apiClient } from "./apiClient";
 
@@ -47,5 +54,60 @@ export async function updateAdminReturnRequestStatus(
     `/admin/return-requests/${id}/status`,
     request,
   );
+  return response.data;
+}
+
+export async function getAdminProducts() {
+  const response = await apiClient.get<AdminProductSummary[]>("/admin/products");
+  return response.data;
+}
+
+export async function getAdminProduct(id: string) {
+  const response = await apiClient.get<AdminProductDetails>(`/admin/products/${id}`);
+  return response.data;
+}
+
+export async function createAdminProduct(request: UpsertAdminProductRequest) {
+  const response = await apiClient.post<AdminProductDetails>("/admin/products", request);
+  return response.data;
+}
+
+export async function updateAdminProduct(id: string, request: UpsertAdminProductRequest) {
+  const response = await apiClient.put<AdminProductDetails>(`/admin/products/${id}`, request);
+  return response.data;
+}
+
+export async function deactivateAdminProduct(id: string) {
+  const response = await apiClient.delete<AdminProductDetails>(`/admin/products/${id}`);
+  return response.data;
+}
+
+export async function getAdminCategories() {
+  const response = await apiClient.get<AdminCategory[]>("/admin/categories");
+  return response.data;
+}
+
+export async function createAdminCategory(request: UpsertAdminCategoryRequest) {
+  const response = await apiClient.post<AdminCategory>("/admin/categories", request);
+  return response.data;
+}
+
+export async function updateAdminCategory(id: string, request: UpsertAdminCategoryRequest) {
+  const response = await apiClient.put<AdminCategory>(`/admin/categories/${id}`, request);
+  return response.data;
+}
+
+export async function getAdminColours() {
+  const response = await apiClient.get<AdminColour[]>("/admin/colours");
+  return response.data;
+}
+
+export async function createAdminColour(request: UpsertAdminColourRequest) {
+  const response = await apiClient.post<AdminColour>("/admin/colours", request);
+  return response.data;
+}
+
+export async function updateAdminColour(id: string, request: UpsertAdminColourRequest) {
+  const response = await apiClient.put<AdminColour>(`/admin/colours/${id}`, request);
   return response.data;
 }
