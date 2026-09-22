@@ -222,6 +222,41 @@ Accept: application/json
 
 ###
 
+GET {{BiliStore.Api_HostAddress}}/api/admin/orders
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/orders/{{OrderNumber}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+PUT {{BiliStore.Api_HostAddress}}/api/admin/orders/{{OrderNumber}}/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "orderStatus": "InProduction",
+  "paymentStatus": "Paid"
+}
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/payments
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/return-requests
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
 POST {{BiliStore.Api_HostAddress}}/api/auth/register
 Content-Type: application/json
 

@@ -165,6 +165,10 @@ p {
   gap: 0.55rem;
 }
 
+.admin-nav-link {
+  border-radius: 6px;
+}
+
 .icon-button {
   align-items: center;
   background: var(--color-surface);
@@ -1549,6 +1553,170 @@ p {
   font-size: 1.4rem;
 }
 
+.admin-page {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.admin-hero {
+  align-items: center;
+  background: var(--color-charcoal);
+  border-radius: 8px;
+  box-shadow: var(--shadow-lift);
+  color: var(--color-paper);
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.admin-hero > svg {
+  color: var(--color-brand);
+  flex: 0 0 auto;
+}
+
+.admin-hero h1 {
+  font-size: 3.1rem;
+}
+
+.admin-hero p {
+  color: rgb(255 250 244 / 78%);
+  margin-bottom: 0;
+}
+
+.admin-layout {
+  align-items: start;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+}
+
+.admin-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+}
+
+.admin-panel > svg {
+  color: var(--color-brand);
+}
+
+.admin-panel h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0;
+}
+
+.admin-order-list,
+.admin-compact-list,
+.admin-item-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.admin-order-row {
+  align-items: center;
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-ink);
+  cursor: pointer;
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: minmax(0, 1.3fr) minmax(120px, 0.7fr) auto;
+  min-height: 64px;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.admin-order-row.active,
+.admin-order-row:hover {
+  border-color: var(--color-brand);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-order-row span,
+.admin-compact-list article,
+.admin-item-list article {
+  min-width: 0;
+}
+
+.admin-order-row small,
+.admin-detail-grid span,
+.admin-status-form span,
+.admin-inline-select span {
+  color: var(--color-muted);
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-detail-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-detail-grid div {
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.25rem;
+  min-height: 76px;
+  padding: 0.8rem;
+}
+
+.admin-detail-grid strong {
+  overflow-wrap: anywhere;
+}
+
+.admin-status-form {
+  align-items: end;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-status-form label,
+.admin-inline-select {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-status-form select,
+.admin-inline-select select {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-ink);
+  min-height: 42px;
+  padding: 0.65rem;
+  width: 100%;
+}
+
+.admin-item-list article,
+.admin-compact-list article {
+  background: #f4eadf;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.85rem;
+}
+
+.admin-item-list article {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.admin-compact-list strong,
+.admin-compact-list span {
+  overflow-wrap: anywhere;
+}
+
 .account-page {
   display: grid;
   gap: 1.5rem;
@@ -1929,6 +2097,9 @@ p {
   .checkout-layout,
   .account-grid,
   .order-detail-grid,
+  .admin-layout,
+  .admin-detail-grid,
+  .admin-status-form,
   .api-panel,
   .site-footer {
     grid-template-columns: 1fr;
@@ -1985,6 +2156,7 @@ p {
   .content-panel,
   .checkout-hero,
   .order-confirmation-hero,
+  .admin-hero,
   .api-panel {
     padding: 1.25rem;
   }
@@ -1998,6 +2170,8 @@ p {
   .cart-detail-grid,
   .checkout-form-grid,
   .checkout-steps,
+  .admin-order-row,
+  .admin-item-list article,
   .custom-colour-inputs,
   .cart-preview-grid,
   .newsletter-form,
@@ -2028,6 +2202,9 @@ p {
   .checkout-actions,
   .order-confirmation-hero,
   .order-item-card > div:first-child,
+  .admin-hero,
+  .admin-order-row,
+  .admin-item-list article,
   .account-hero {
     align-items: stretch;
     display: grid;

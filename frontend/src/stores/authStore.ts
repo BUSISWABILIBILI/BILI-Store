@@ -6,6 +6,7 @@ type AuthStore = {
   accessToken: string | null;
   customer: CustomerProfile | null;
   expiresAt: string | null;
+  roles: string[];
   clearSession: () => void;
   setCustomer: (customer: CustomerProfile) => void;
   setSession: (session: AuthResponse) => void;
@@ -17,13 +18,15 @@ export const useAuthStore = create<AuthStore>()(
       accessToken: null,
       customer: null,
       expiresAt: null,
-      clearSession: () => set({ accessToken: null, customer: null, expiresAt: null }),
+      roles: [],
+      clearSession: () => set({ accessToken: null, customer: null, expiresAt: null, roles: [] }),
       setCustomer: (customer) => set({ customer }),
       setSession: (session) =>
         set({
           accessToken: session.accessToken,
           customer: session.customer,
           expiresAt: session.expiresAt,
+          roles: session.roles,
         }),
     }),
     {
@@ -32,6 +35,7 @@ export const useAuthStore = create<AuthStore>()(
         accessToken: state.accessToken,
         customer: state.customer,
         expiresAt: state.expiresAt,
+        roles: state.roles,
       }),
     },
   ),

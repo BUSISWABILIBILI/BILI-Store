@@ -11,6 +11,7 @@ export type AuthResponse = {
   accessToken: string;
   expiresAt: string;
   customer: CustomerProfile;
+  roles: string[];
 };
 
 export type RegisterCustomerRequest = {

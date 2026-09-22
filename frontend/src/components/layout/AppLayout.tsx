@@ -2,6 +2,7 @@ import { Menu, Scissors, ShoppingBag, UserRound, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { routes } from "../../app/routes";
+import { useAuthStore } from "../../stores/authStore";
 import { useCartStore } from "../../stores/cartStore";
 
 export function AppLayout() {
@@ -9,6 +10,8 @@ export function AppLayout() {
   const cartItemCount = useCartStore((state) =>
     state.items.reduce((total, item) => total + item.quantity, 0),
   );
+  const roles = useAuthStore((state) => state.roles);
+  const isAdmin = roles.includes("Admin");
   const primaryNavigation = routes.filter((route) =>
     ["/shop", "/measurements", "/return-policy"].includes(route.path),
   );
@@ -48,6 +51,11 @@ export function AppLayout() {
           </div>
 
           <div className="nav-actions">
+            {isAdmin ? (
+              <NavLink className="nav-link admin-nav-link" to="/admin/orders">
+                Admin
+              </NavLink>
+            ) : null}
             <NavLink className="icon-button" to="/account" aria-label="Account">
               <UserRound aria-hidden="true" size={20} />
             </NavLink>
@@ -75,6 +83,7 @@ export function AppLayout() {
           <Link to="/measurements">Measurements</Link>
           <Link to="/return-policy">Return Policy</Link>
           <Link to="/checkout">Checkout</Link>
+          {isAdmin ? <Link to="/admin/orders">Admin</Link> : null}
         </div>
       </footer>
     </div>

@@ -65,7 +65,7 @@ public sealed class AuthController(
         dbContext.CustomerProfiles.Add(profile);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Ok(CreateAuthResponse(user, profile));
+        return Ok(await CreateAuthResponseAsync(user, profile));
     }
 
     [HttpPost("login")]
@@ -86,7 +86,7 @@ public sealed class AuthController(
             return Unauthorized(new { errors = new[] { "This account does not have a customer profile." } });
         }
 
-        return Ok(CreateAuthResponse(user, profile));
+        return Ok(await CreateAuthResponseAsync(user, profile));
     }
 
     [HttpPost("forgot-password")]
@@ -157,12 +157,13 @@ public sealed class AuthController(
         return profile is null ? null : (user, profile);
     }
 
-    private AuthResponseDto CreateAuthResponse(ApplicationUser user, CustomerProfile profile)
+    private async Task<AuthResponseDto> CreateAuthResponseAsync(ApplicationUser user, CustomerProfile profile)
     {
         var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()
             ?? throw new InvalidOperationException("JWT settings are not configured.");
         var expiresAt = DateTimeOffset.UtcNow.AddHours(8);
-        var claims = new[]
+        var roles = await userManager.GetRolesAsync(user);
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -170,6 +171,9 @@ public sealed class AuthController(
             new Claim(ClaimTypes.Name, $"{profile.FirstName} {profile.LastName}".Trim()),
             new Claim("customer_profile_id", profile.Id.ToString())
         };
+
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SigningKey));
         var token = new JwtSecurityToken(
             issuer: jwtSettings.Issuer,
@@ -181,7 +185,8 @@ public sealed class AuthController(
         return new AuthResponseDto(
             new JwtSecurityTokenHandler().WriteToken(token),
             expiresAt,
-            MapProfile(user, profile));
+            MapProfile(user, profile),
+            roles.ToArray());
     }
 
     private static CustomerProfileDto MapProfile(ApplicationUser user, CustomerProfile profile)
