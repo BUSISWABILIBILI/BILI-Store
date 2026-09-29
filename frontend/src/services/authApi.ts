@@ -2,6 +2,8 @@ import { apiClient } from "./apiClient";
 import type {
   AuthResponse,
   CreateCustomerMeasurementProfileRequest,
+  CreateReturnRequestRequest,
+  CustomerReturnRequest,
   CustomerOrderSummary,
   CustomerMeasurementProfile,
   CustomerProfile,
@@ -58,6 +60,24 @@ export async function requestPasswordReset(request: ForgotPasswordRequest) {
 
 export async function getCustomerOrders() {
   const response = await apiClient.get<CustomerOrderSummary[]>("/customers/me/orders");
+
+  return response.data;
+}
+
+export async function getCustomerReturnRequests() {
+  const response = await apiClient.get<CustomerReturnRequest[]>("/customers/me/orders/return-requests");
+
+  return response.data;
+}
+
+export async function createCustomerReturnRequest(
+  orderNumber: string,
+  request: CreateReturnRequestRequest,
+) {
+  const response = await apiClient.post<CustomerReturnRequest>(
+    `/customers/me/orders/${orderNumber}/return-requests`,
+    request,
+  );
 
   return response.data;
 }

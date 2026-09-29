@@ -73,3 +73,18 @@ export type CustomerOrderSummary = {
   orderStatus: string;
   itemCount: number;
 };
+
+export type CreateReturnRequestRequest = {
+  reason: string;
+  details: string;
+};
+
+export type CustomerReturnRequest = {
+  id: string;
+  orderNumber: string;
+  reason: string;
+  details: string;
+  status: string;
+  requestedAt: string;
+  resolvedAt: string | null;
+};

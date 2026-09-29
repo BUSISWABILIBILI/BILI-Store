@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { LogOut, Ruler, Save, UserRound } from "lucide-react";
+import { LogOut, RotateCcw, Ruler, Save, UserRound } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   createCustomerMeasurementProfile,
+  createCustomerReturnRequest,
   getCurrentCustomer,
   getCustomerMeasurementProfiles,
   getCustomerOrders,
+  getCustomerReturnRequests,
   loginCustomer,
   registerCustomer,
   requestPasswordReset,
@@ -55,6 +57,11 @@ export function AccountPage() {
     hips: "",
   });
   const [accountMessage, setAccountMessage] = useState("");
+  const [returnRequestForm, setReturnRequestForm] = useState({
+    orderNumber: "",
+    reason: "",
+    details: "",
+  });
 
   const profileQuery = useQuery({
     queryKey: ["account", "me"],
@@ -73,6 +80,11 @@ export function AccountPage() {
     queryFn: getCustomerOrders,
     enabled: Boolean(accessToken),
   });
+  const returnRequestsQuery = useQuery({
+    queryKey: ["account", "return-requests"],
+    queryFn: getCustomerReturnRequests,
+    enabled: Boolean(accessToken),
+  });
 
   useEffect(() => {
     if (profileQuery.data) {
@@ -85,6 +97,15 @@ export function AccountPage() {
     }
   }, [profileQuery.data, setCustomer]);
 
+
+  useEffect(() => {
+    if (!returnRequestForm.orderNumber && ordersQuery.data?.length) {
+      setReturnRequestForm((current) => ({
+        ...current,
+        orderNumber: ordersQuery.data[0].orderNumber,
+      }));
+    }
+  }, [ordersQuery.data, returnRequestForm.orderNumber]);
   const registerMutation = useMutation({
     mutationFn: registerCustomer,
     onSuccess: (session) => {
@@ -127,6 +148,19 @@ export function AccountPage() {
     },
   });
 
+
+  const createReturnRequestMutation = useMutation({
+    mutationFn: () =>
+      createCustomerReturnRequest(returnRequestForm.orderNumber, {
+        reason: returnRequestForm.reason,
+        details: returnRequestForm.details,
+      }),
+    onSuccess: async () => {
+      setReturnRequestForm((current) => ({ ...current, reason: "", details: "" }));
+      setAccountMessage("Return request submitted.");
+      await queryClient.invalidateQueries({ queryKey: ["account", "return-requests"] });
+    },
+  });
   function logout() {
     clearSession();
     setAccountMessage("Logged out.");
@@ -334,7 +368,75 @@ export function AccountPage() {
           <p>Your order history will appear here after order creation is built.</p>
         )}
       </section>
-    </div>
+       <section className="account-card">
+        <RotateCcw aria-hidden="true" size={26} />
+        <h2>Return requests</h2>
+        <form
+          className="account-return-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            createReturnRequestMutation.mutate();
+          }}
+        >
+          <label className="account-field">
+            <span>Order</span>
+            <select
+              value={returnRequestForm.orderNumber}
+              onChange={(event) =>
+                setReturnRequestForm((current) => ({ ...current, orderNumber: event.target.value }))
+              }
+            >
+              {ordersQuery.data?.map((order) => (
+                <option key={order.orderNumber} value={order.orderNumber}>
+                  {order.orderNumber}
+                </option>
+              ))}
+            </select>
+          </label>
+          <AccountInput
+            label="Reason"
+            value={returnRequestForm.reason}
+            onChange={(reason) => setReturnRequestForm((current) => ({ ...current, reason }))}
+          />
+          <label className="account-field">
+            <span>Details</span>
+            <textarea
+              rows={4}
+              value={returnRequestForm.details}
+              onChange={(event) =>
+                setReturnRequestForm((current) => ({ ...current, details: event.target.value }))
+              }
+            />
+          </label>
+          <button
+            className="button button-primary"
+            disabled={!returnRequestForm.orderNumber || createReturnRequestMutation.isPending}
+            type="submit"
+          >
+            <RotateCcw aria-hidden="true" size={18} />
+            {createReturnRequestMutation.isPending ? "Submitting..." : "Submit a return request"}
+          </button>
+          {createReturnRequestMutation.isError ? <p className="inline-alert">Could not submit that return request.</p> : null}
+        </form>
+
+        {returnRequestsQuery.data?.length ? (
+          <div className="account-measurement-list">
+            {returnRequestsQuery.data.map((request) => (
+              <article key={request.id}>
+                <div>
+                  <h3>{request.orderNumber}</h3>
+                  <span>{request.status}</span>
+                </div>
+                <p>{request.reason}</p>
+                <p>{request.details}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p>No return requests submitted yet.</p>
+        )}
+      </section>
+   </div>
   );
 }
 

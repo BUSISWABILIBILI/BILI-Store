@@ -10,6 +10,7 @@ import type {
   AdminProductDetails,
   AdminProductSummary,
   AdminReturnRequestSummary,
+  UpdateAdminDeliveryStatusRequest,
   UpdateAdminOrderStatusRequest,
   UpdateReturnRequestStatusRequest,
   UpsertAdminCategoryRequest,
@@ -39,6 +40,16 @@ export async function updateAdminOrderStatus(
   return response.data;
 }
 
+export async function updateAdminDeliveryStatus(
+  orderNumber: string,
+  request: UpdateAdminDeliveryStatusRequest,
+) {
+  const response = await apiClient.put<AdminOrderDetails>(
+    `/admin/orders/${orderNumber}/delivery-status`,
+    request,
+  );
+  return response.data;
+}
 export async function getAdminPayments() {
   const response = await apiClient.get<AdminPaymentSummary[]>("/admin/payments");
   return response.data;

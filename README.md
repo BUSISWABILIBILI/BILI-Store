@@ -4,7 +4,7 @@ BILI Store is a planned full-stack e-commerce ordering system for custom-sewn tr
 
 ## Current Phase
 
-Phase 13 is complete as the admin dashboard and customer support foundation. The repository now contains customer accounts, cart quoting, multi-step checkout, PAXI/PEP delivery review, return-policy acceptance, development payment session creation, saved orders, order confirmation, admin order operations, admin product/category/colour management, dashboard summaries, and admin customer lookup.
+Phase 14 is complete as the delivery and return operations foundation. The repository now contains customer accounts, cart quoting, multi-step checkout, PAXI/PEP delivery review, return-policy acceptance, development payment session creation, saved orders, order confirmation, admin order operations, admin product/category/colour management, dashboard summaries, admin customer lookup, delivery status updates, and customer return requests.
 
 ## Source Brief
 
@@ -116,6 +116,14 @@ See `docs/PHASE_13_ADMIN_DASHBOARD.md` for:
 - Admin customer lookup
 - Customer order and measurement review
 - Dashboard and customer frontend pages
+
+See `docs/PHASE_14_DELIVERY_RETURNS.md` for:
+
+- Admin delivery status updates
+- Customer return request submission
+- Customer return request history
+- Admin return review workflow
+- Delivery and return API examples
 
 ## Local Development
 

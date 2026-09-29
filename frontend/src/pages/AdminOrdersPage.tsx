@@ -6,6 +6,7 @@ import {
   getAdminOrders,
   getAdminPayments,
   getAdminReturnRequests,
+  updateAdminDeliveryStatus,
   updateAdminOrderStatus,
   updateAdminReturnRequestStatus,
 } from "../services/adminApi";
@@ -25,6 +26,7 @@ const orderStatusOptions = [
 ];
 
 const paymentStatusOptions = ["Pending", "Paid", "Failed", "Cancelled", "Refunded"];
+const deliveryStatusOptions = ["Pending", "Booked", "SentViaPaxi", "ReadyForCollection", "Collected", "IssueReported"];
 const returnStatusOptions = [
   "Submitted",
   "UnderReview",
@@ -42,6 +44,7 @@ export function AdminOrdersPage() {
   const [selectedOrderNumber, setSelectedOrderNumber] = useState("");
   const [orderStatus, setOrderStatus] = useState(orderStatusOptions[0]);
   const [paymentStatus, setPaymentStatus] = useState(paymentStatusOptions[0]);
+  const [deliveryStatus, setDeliveryStatus] = useState(deliveryStatusOptions[0]);
   const [returnStatusDrafts, setReturnStatusDrafts] = useState<Record<string, string>>({});
 
   const ordersQuery = useQuery({
@@ -80,11 +83,21 @@ export function AdminOrdersPage() {
     },
   });
 
+
+  const updateDeliveryStatusMutation = useMutation({
+    mutationFn: () => updateAdminDeliveryStatus(selectedOrderNumber, { deliveryStatus }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["admin", "orders"] });
+      await queryClient.invalidateQueries({ queryKey: ["admin", "orders", selectedOrderNumber] });
+      await queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+    },
+  });
   const updateReturnStatusMutation = useMutation({
     mutationFn: ({ id, status }: { id: string; status: string }) =>
       updateAdminReturnRequestStatus(id, { status }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["admin", "return-requests"] });
+      await queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
     },
   });
 
@@ -101,6 +114,7 @@ export function AdminOrdersPage() {
 
     setOrderStatus(selectedOrderQuery.data.orderStatus);
     setPaymentStatus(selectedOrderQuery.data.paymentStatus);
+    setDeliveryStatus(selectedOrderQuery.data.delivery.deliveryStatus);
   }, [selectedOrderQuery.data]);
 
   if (!accessToken || !isAdmin) {
@@ -200,6 +214,16 @@ export function AdminOrdersPage() {
                     ))}
                   </select>
                 </label>
+                <label>
+                  <span>Delivery status</span>
+                  <select value={deliveryStatus} onChange={(event) => setDeliveryStatus(event.target.value)}>
+                    {deliveryStatusOptions.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <button
                   className="button button-primary"
                   disabled={updateStatusMutation.isPending}
@@ -208,6 +232,15 @@ export function AdminOrdersPage() {
                 >
                   <Save aria-hidden="true" size={18} />
                   {updateStatusMutation.isPending ? "Saving..." : "Save status"}
+                </button>
+                <button
+                  className="button button-light"
+                  disabled={updateDeliveryStatusMutation.isPending}
+                  onClick={() => updateDeliveryStatusMutation.mutate()}
+                  type="button"
+                >
+                  <Save aria-hidden="true" size={18} />
+                  {updateDeliveryStatusMutation.isPending ? "Saving..." : "Save delivery"}
                 </button>
               </div>
 

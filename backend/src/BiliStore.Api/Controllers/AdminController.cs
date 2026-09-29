@@ -112,6 +112,51 @@ public sealed class AdminController(
         return updatedOrder is null ? NotFound() : Ok(updatedOrder);
     }
 
+
+    [HttpPut("orders/{orderNumber}/delivery-status")]
+    public async Task<ActionResult<OrderConfirmationDto>> UpdateDeliveryStatus(
+        string orderNumber,
+        UpdateAdminDeliveryStatusRequestDto request,
+        CancellationToken cancellationToken)
+    {
+        if (!Enum.TryParse<DeliveryStatus>(request.DeliveryStatus, true, out var deliveryStatus))
+        {
+            return BadRequest(new { errors = new[] { "Unknown delivery status." } });
+        }
+
+        var order = await dbContext.Orders
+            .Include(currentOrder => currentOrder.DeliveryDetails)
+            .SingleOrDefaultAsync(
+                currentOrder => currentOrder.OrderNumber == orderNumber.Trim(),
+                cancellationToken);
+
+        if (order is null)
+        {
+            return NotFound();
+        }
+
+        if (order.DeliveryDetails is null)
+        {
+            return BadRequest(new { errors = new[] { "This order does not have delivery details." } });
+        }
+
+        order.DeliveryDetails.DeliveryStatus = deliveryStatus;
+        order.UpdatedAt = DateTimeOffset.UtcNow;
+
+        order.OrderStatus = deliveryStatus switch
+        {
+            DeliveryStatus.SentViaPaxi => OrderStatus.SentViaPaxi,
+            DeliveryStatus.ReadyForCollection => OrderStatus.ReadyForCollection,
+            DeliveryStatus.Collected => OrderStatus.Completed,
+            _ => order.OrderStatus
+        };
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        var updatedOrder = await orderService.GetByOrderNumberAsync(order.OrderNumber, cancellationToken);
+
+        return updatedOrder is null ? NotFound() : Ok(updatedOrder);
+    }
     [HttpGet("payments")]
     public async Task<ActionResult<IReadOnlyList<AdminPaymentSummaryDto>>> GetPayments(CancellationToken cancellationToken)
     {

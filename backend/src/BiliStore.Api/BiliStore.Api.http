@@ -244,6 +244,7 @@ Authorization: Bearer {{accessToken}}
 Accept: application/json
 
 ###
+
 GET {{BiliStore.Api_HostAddress}}/api/admin/orders
 Authorization: Bearer {{accessToken}}
 Accept: application/json
@@ -263,6 +264,17 @@ Content-Type: application/json
 {
   "orderStatus": "InProduction",
   "paymentStatus": "Paid"
+}
+
+###
+
+
+PUT {{BiliStore.Api_HostAddress}}/api/admin/orders/{{OrderNumber}}/delivery-status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "deliveryStatus": "SentViaPaxi"
 }
 
 ###
@@ -498,3 +510,19 @@ Authorization: Bearer {{accessToken}}
 Accept: application/json
 
 ###
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/customers/me/orders/return-requests
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+POST {{BiliStore.Api_HostAddress}}/api/customers/me/orders/{{OrderNumber}}/return-requests
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "reason": "Sizing issue",
+  "details": "The item does not fit as expected and I would like the store to review it."
+}

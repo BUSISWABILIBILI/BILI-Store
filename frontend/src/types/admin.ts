@@ -42,6 +42,10 @@ export type UpdateAdminOrderStatusRequest = {
   paymentStatus: string | null;
 };
 
+export type UpdateAdminDeliveryStatusRequest = {
+  deliveryStatus: string;
+};
+
 export type UpdateReturnRequestStatusRequest = {
   status: string;
 };

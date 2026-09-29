@@ -1962,7 +1962,9 @@ p {
   text-transform: uppercase;
 }
 
-.account-field input {
+.account-field input,
+.account-field select,
+.account-field textarea {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 6px;
@@ -2599,4 +2601,14 @@ p {
     align-items: stretch;
     display: grid;
   }
+}
+
+.account-return-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.account-field textarea {
+  min-height: 110px;
+  resize: vertical;
 }
