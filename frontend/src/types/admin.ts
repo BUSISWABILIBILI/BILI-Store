@@ -197,6 +197,11 @@ export type AdminDashboard = {
   productAlerts: AdminDashboardProductAlert[];
 };
 
+export type AdminReportRange = {
+  dateFrom: string;
+  dateTo: string;
+};
+
 export type AdminCustomerSummary = {
   id: string;
   applicationUserId: string;

@@ -9,6 +9,7 @@ import type {
   AdminPaymentSummary,
   AdminProductDetails,
   AdminProductSummary,
+  AdminReportRange,
   AdminReturnRequestSummary,
   UpdateAdminDeliveryStatusRequest,
   UpdateAdminOrderStatusRequest,
@@ -126,8 +127,28 @@ export async function updateAdminColour(id: string, request: UpsertAdminColourRe
   return response.data;
 }
 
-export async function getAdminDashboard() {
-  const response = await apiClient.get<AdminDashboard>("/admin/dashboard");
+export async function getAdminDashboard(range?: Partial<AdminReportRange>) {
+  const response = await apiClient.get<AdminDashboard>("/admin/dashboard", {
+    params: cleanReportRange(range),
+  });
+  return response.data;
+}
+
+export async function getAdminOrdersReport(range?: Partial<AdminReportRange>) {
+  const response = await apiClient.get<Blob>("/admin/reports/orders.csv", {
+    params: cleanReportRange(range),
+    responseType: "blob",
+  });
+
+  return response.data;
+}
+
+export async function getAdminCustomersReport(range?: Partial<AdminReportRange>) {
+  const response = await apiClient.get<Blob>("/admin/reports/customers.csv", {
+    params: cleanReportRange(range),
+    responseType: "blob",
+  });
+
   return response.data;
 }
 
@@ -139,4 +160,11 @@ export async function getAdminCustomers() {
 export async function getAdminCustomer(id: string) {
   const response = await apiClient.get<AdminCustomerDetails>(`/admin/customers/${id}`);
   return response.data;
+}
+
+function cleanReportRange(range?: Partial<AdminReportRange>) {
+  return {
+    ...(range?.dateFrom ? { dateFrom: range.dateFrom } : {}),
+    ...(range?.dateTo ? { dateTo: range.dateTo } : {}),
+  };
 }

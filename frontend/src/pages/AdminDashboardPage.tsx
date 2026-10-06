@@ -1,7 +1,19 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle, Boxes, ClipboardList, CreditCard, LayoutDashboard, RotateCcw, UsersRound } from "lucide-react";
+import {
+  AlertTriangle,
+  Boxes,
+  CalendarDays,
+  ClipboardList,
+  CreditCard,
+  Download,
+  Filter,
+  LayoutDashboard,
+  RotateCcw,
+  UsersRound,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-import { getAdminDashboard } from "../services/adminApi";
+import { getAdminCustomersReport, getAdminDashboard, getAdminOrdersReport } from "../services/adminApi";
 import { useAuthStore } from "../stores/authStore";
 import { formatCurrency } from "../utils/formatters";
 
@@ -13,16 +25,62 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
+function buildReportFileName(reportName: "orders" | "customers", dateFrom: string, dateTo: string) {
+  const range = dateFrom || dateTo ? `-${dateFrom || "start"}-${dateTo || "today"}` : "";
+
+  return `bili-${reportName}-report${range}.csv`;
+}
+
+function downloadBlob(blob: Blob, fileName: string) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = fileName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
 export function AdminDashboardPage() {
   const accessToken = useAuthStore((state) => state.accessToken);
   const roles = useAuthStore((state) => state.roles);
   const isAdmin = roles.includes("Admin");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [reportMessage, setReportMessage] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const isDateRangeInvalid = Boolean(dateFrom && dateTo && dateFrom > dateTo);
 
   const dashboardQuery = useQuery({
-    queryKey: ["admin", "dashboard"],
-    queryFn: getAdminDashboard,
-    enabled: Boolean(accessToken && isAdmin),
+    queryKey: ["admin", "dashboard", dateFrom, dateTo],
+    queryFn: () => getAdminDashboard({ dateFrom, dateTo }),
+    enabled: Boolean(accessToken && isAdmin && !isDateRangeInvalid),
   });
+
+  async function handleReportDownload(reportName: "orders" | "customers") {
+    if (isDateRangeInvalid) {
+      setReportMessage("Choose a start date that is before the end date.");
+      return;
+    }
+
+    setIsExporting(true);
+    setReportMessage(null);
+
+    try {
+      const blob =
+        reportName === "orders"
+          ? await getAdminOrdersReport({ dateFrom, dateTo })
+          : await getAdminCustomersReport({ dateFrom, dateTo });
+
+      downloadBlob(blob, buildReportFileName(reportName, dateFrom, dateTo));
+      setReportMessage(`${reportName === "orders" ? "Orders" : "Customers"} report downloaded.`);
+    } catch {
+      setReportMessage("Report download failed. Check admin permissions and try again.");
+    } finally {
+      setIsExporting(false);
+    }
+  }
 
   if (!accessToken || !isAdmin) {
     return (
@@ -78,6 +136,64 @@ export function AdminDashboardPage() {
       {dashboardQuery.isError ? (
         <p className="inline-alert">Dashboard data could not be loaded. Check admin permissions.</p>
       ) : null}
+
+      <section className="admin-report-panel">
+        <div className="admin-report-heading">
+          <Filter aria-hidden="true" size={24} />
+          <div>
+            <p className="eyebrow">Reports</p>
+            <h2>Reporting range</h2>
+            <p>Filter dashboard activity and download CSV reports for orders or customers.</p>
+          </div>
+        </div>
+
+        <div className="admin-report-grid">
+          <label className="admin-field">
+            <span>From</span>
+            <input type="date" value={dateFrom} onChange={(event) => setDateFrom(event.target.value)} />
+          </label>
+          <label className="admin-field">
+            <span>To</span>
+            <input type="date" value={dateTo} onChange={(event) => setDateTo(event.target.value)} />
+          </label>
+          <div className="admin-report-actions">
+            <button
+              className="button button-light"
+              disabled={!dateFrom && !dateTo}
+              type="button"
+              onClick={() => {
+                setDateFrom("");
+                setDateTo("");
+                setReportMessage(null);
+              }}
+            >
+              <CalendarDays aria-hidden="true" size={18} />
+              Clear
+            </button>
+            <button
+              className="button button-light"
+              disabled={isExporting || isDateRangeInvalid}
+              type="button"
+              onClick={() => void handleReportDownload("customers")}
+            >
+              <Download aria-hidden="true" size={18} />
+              Customers CSV
+            </button>
+            <button
+              className="button button-primary"
+              disabled={isExporting || isDateRangeInvalid}
+              type="button"
+              onClick={() => void handleReportDownload("orders")}
+            >
+              <Download aria-hidden="true" size={18} />
+              Orders CSV
+            </button>
+          </div>
+        </div>
+
+        {isDateRangeInvalid ? <p className="inline-alert">Start date must be before the end date.</p> : null}
+        {reportMessage ? <p className="inline-alert">{reportMessage}</p> : null}
+      </section>
 
       {dashboard ? (
         <>

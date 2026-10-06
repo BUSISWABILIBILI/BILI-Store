@@ -1,4 +1,5 @@
 using BiliStore.Application.DTOs.Admin;
+using BiliStore.Domain.Entities;
 using BiliStore.Domain.Enums;
 using BiliStore.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -13,51 +14,54 @@ namespace BiliStore.Api.Controllers;
 public sealed class AdminDashboardController(BiliStoreDbContext dbContext) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<AdminDashboardDto>> GetDashboard(CancellationToken cancellationToken)
+    public async Task<ActionResult<AdminDashboardDto>> GetDashboard(
+        [FromQuery] DateOnly? dateFrom,
+        [FromQuery] DateOnly? dateTo,
+        CancellationToken cancellationToken)
     {
-        var orderCount = await dbContext.Orders.CountAsync(cancellationToken);
-        var pendingOrderCount = await dbContext.Orders
+        var ordersQuery = ApplyOrderDateRange(dbContext.Orders.AsNoTracking(), dateFrom, dateTo);
+        var returnRequestsQuery = ApplyReturnRequestDateRange(dbContext.ReturnRequests.AsNoTracking(), dateFrom, dateTo);
+
+        var orderCount = await ordersQuery.CountAsync(cancellationToken);
+        var pendingOrderCount = await ordersQuery
             .CountAsync(order => order.OrderStatus == OrderStatus.PendingPayment, cancellationToken);
-        var inProductionOrderCount = await dbContext.Orders
+        var inProductionOrderCount = await ordersQuery
             .CountAsync(order => order.OrderStatus == OrderStatus.InProduction, cancellationToken);
-        var completedOrderCount = await dbContext.Orders
+        var completedOrderCount = await ordersQuery
             .CountAsync(order => order.OrderStatus == OrderStatus.Completed, cancellationToken);
-        var paidRevenue = await dbContext.Orders
+        var paidRevenue = await ordersQuery
             .Where(order => order.PaymentStatus == PaymentStatus.Paid)
             .SumAsync(order => (decimal?)order.Total, cancellationToken) ?? 0m;
-        var pendingRevenue = await dbContext.Orders
+        var pendingRevenue = await ordersQuery
             .Where(order => order.PaymentStatus == PaymentStatus.Pending)
             .SumAsync(order => (decimal?)order.Total, cancellationToken) ?? 0m;
         var customerCount = await dbContext.CustomerProfiles.CountAsync(cancellationToken);
-        var guestOrderCount = await dbContext.Orders
+        var guestOrderCount = await ordersQuery
             .CountAsync(order => order.CustomerProfileId == null, cancellationToken);
         var availableProductCount = await dbContext.Products
             .CountAsync(product => product.IsAvailable, cancellationToken);
         var unavailableProductCount = await dbContext.Products
             .CountAsync(product => !product.IsAvailable, cancellationToken);
-        var returnRequestCount = await dbContext.ReturnRequests.CountAsync(cancellationToken);
-        var openReturnRequestCount = await dbContext.ReturnRequests
+        var returnRequestCount = await returnRequestsQuery.CountAsync(cancellationToken);
+        var openReturnRequestCount = await returnRequestsQuery
             .CountAsync(
                 returnRequest => returnRequest.Status == ReturnRequestStatus.Submitted
                     || returnRequest.Status == ReturnRequestStatus.UnderReview,
                 cancellationToken);
 
-        var ordersByStatus = await dbContext.Orders
-            .AsNoTracking()
+        var ordersByStatus = await ordersQuery
             .GroupBy(order => order.OrderStatus)
             .Select(group => new AdminDashboardStatusCountDto(group.Key.ToString(), group.Count()))
             .OrderBy(status => status.Status)
             .ToListAsync(cancellationToken);
 
-        var paymentsByStatus = await dbContext.Orders
-            .AsNoTracking()
+        var paymentsByStatus = await ordersQuery
             .GroupBy(order => order.PaymentStatus)
             .Select(group => new AdminDashboardStatusCountDto(group.Key.ToString(), group.Count()))
             .OrderBy(status => status.Status)
             .ToListAsync(cancellationToken);
 
-        var recentOrders = await dbContext.Orders
-            .AsNoTracking()
+        var recentOrders = await ordersQuery
             .OrderByDescending(order => order.OrderDate)
             .Take(6)
             .Select(order => new AdminDashboardRecentOrderDto(
@@ -120,5 +124,45 @@ public sealed class AdminDashboardController(BiliStoreDbContext dbContext) : Con
             paymentsByStatus,
             recentOrders,
             productAlerts));
+    }
+
+    private static IQueryable<Order> ApplyOrderDateRange(
+        IQueryable<Order> query,
+        DateOnly? dateFrom,
+        DateOnly? dateTo)
+    {
+        if (dateFrom is not null)
+        {
+            var start = new DateTimeOffset(dateFrom.Value.ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
+            query = query.Where(order => order.OrderDate >= start);
+        }
+
+        if (dateTo is not null)
+        {
+            var endExclusive = new DateTimeOffset(dateTo.Value.AddDays(1).ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
+            query = query.Where(order => order.OrderDate < endExclusive);
+        }
+
+        return query;
+    }
+
+    private static IQueryable<ReturnRequest> ApplyReturnRequestDateRange(
+        IQueryable<ReturnRequest> query,
+        DateOnly? dateFrom,
+        DateOnly? dateTo)
+    {
+        if (dateFrom is not null)
+        {
+            var start = new DateTimeOffset(dateFrom.Value.ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
+            query = query.Where(returnRequest => returnRequest.RequestedAt >= start);
+        }
+
+        if (dateTo is not null)
+        {
+            var endExclusive = new DateTimeOffset(dateTo.Value.AddDays(1).ToDateTime(TimeOnly.MinValue), TimeSpan.Zero);
+            query = query.Where(returnRequest => returnRequest.RequestedAt < endExclusive);
+        }
+
+        return query;
     }
 }

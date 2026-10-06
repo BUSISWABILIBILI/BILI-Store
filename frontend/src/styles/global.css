@@ -1585,6 +1585,54 @@ p {
   margin-bottom: 0;
 }
 
+.admin-report-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+}
+
+.admin-report-heading {
+  align-items: start;
+  display: flex;
+  gap: 1rem;
+}
+
+.admin-report-heading > svg {
+  color: var(--color-brand);
+  flex: 0 0 auto;
+}
+
+.admin-report-heading h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.35rem;
+}
+
+.admin-report-heading p:last-child {
+  margin-bottom: 0;
+}
+
+.admin-report-grid {
+  align-items: end;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 220px)) minmax(0, 1fr);
+}
+
+.admin-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.admin-report-actions .button {
+  min-height: 42px;
+}
+
 .admin-layout {
   align-items: start;
   display: grid;
@@ -2289,6 +2337,7 @@ p {
   .admin-layout,
   .admin-catalogue-layout,
   .admin-detail-grid,
+  .admin-report-grid,
   .admin-status-form,
   .admin-form-grid,
   .admin-relation-grid,
@@ -2400,11 +2449,17 @@ p {
   .order-confirmation-hero,
   .order-item-card > div:first-child,
   .admin-hero,
+  .admin-report-heading,
   .admin-order-row,
   .admin-item-list article,
   .account-hero {
     align-items: stretch;
     display: grid;
+  }
+
+  .admin-report-actions {
+    display: grid;
+    justify-content: stretch;
   }
 
   .cart-item-card {

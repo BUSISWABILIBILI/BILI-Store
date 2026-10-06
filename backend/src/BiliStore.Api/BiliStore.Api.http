@@ -233,6 +233,24 @@ Accept: application/json
 
 ###
 
+GET {{BiliStore.Api_HostAddress}}/api/admin/dashboard?dateFrom=2026-09-01&dateTo=2026-09-30
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/reports/orders.csv?dateFrom=2026-09-01&dateTo=2026-09-30
+Authorization: Bearer {{accessToken}}
+Accept: text/csv
+
+###
+
+GET {{BiliStore.Api_HostAddress}}/api/admin/reports/customers.csv?dateFrom=2026-09-01&dateTo=2026-09-30
+Authorization: Bearer {{accessToken}}
+Accept: text/csv
+
+###
+
 GET {{BiliStore.Api_HostAddress}}/api/admin/customers
 Authorization: Bearer {{accessToken}}
 Accept: application/json
