@@ -12,8 +12,8 @@ public sealed class SystemController : ControllerBase
     {
         return Ok(new ApiInfoResponse(
             Name: "BILI Store",
-            Version: "1.5.0",
-            Description: "Admin reporting exports, delivery operations, customer returns, admin dashboard, admin customer, admin catalogue, admin order, payment, checkout, customer account, catalogue, measurement, and cart API for a custom-sewn traditional clothing ordering system.",
-            CurrentPhase: "Phase 15 - Admin reporting exports"));
+            Version: "1.6.0",
+            Description: "Deployment preparation, admin reporting exports, delivery operations, customer returns, admin dashboard, admin customer, admin catalogue, admin order, payment, checkout, customer account, catalogue, measurement, and cart API for a custom-sewn traditional clothing ordering system.",
+            CurrentPhase: "Phase 16 - Deployment preparation"));
     }
 }

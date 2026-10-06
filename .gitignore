@@ -7,6 +7,7 @@ frontend/.pnpm-store/
 frontend/.env
 frontend/.env.*
 !frontend/.env.example
+!frontend/.env*.example
 
 # Backend
 backend/**/bin/
@@ -42,6 +43,7 @@ Desktop.ini
 .env
 .env.*
 !.env.example
+!.env*.example
 
 # Alternate metadata used only if the app sandbox blocks writes to .git
 .git/
